@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EnglishStar ⭐</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#1a1a2e;--bg2:#16213e;--card:#0f3460;--card2:#1a4a7a;
+  --gold:#ffd700;--gold2:#e6a800;--teal:#00d4aa;--teal2:#009e80;
+  --coral:#ff6b6b;--purple:#a855f7;--purple2:#7c3aed;
+  --green:#4ade80;--white:#f0f4ff;--muted:#7a8eaa;
+  --r:18px;--rs:12px;
+}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--white);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(1px 1px at 10% 20%,rgba(255,255,255,.7) 0%,transparent 100%),
+    radial-gradient(1px 1px at 80% 8%,rgba(255,255,255,.5) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 45% 55%,rgba(255,255,255,.5) 0%,transparent 100%),
+    radial-gradient(1px 1px at 5% 70%,rgba(255,255,255,.6) 0%,transparent 100%),
+    radial-gradient(1px 1px at 90% 62%,rgba(255,255,255,.5) 0%,transparent 100%),
+    radial-gradient(1px 1px at 30% 12%,rgba(255,255,255,.7) 0%,transparent 100%),
+    radial-gradient(1px 1px at 65% 88%,rgba(255,255,255,.5) 0%,transparent 100%),
+    radial-gradient(1px 1px at 52% 40%,rgba(255,255,255,.6) 0%,transparent 100%),
+    radial-gradient(1px 1px at 20% 90%,rgba(255,255,255,.5) 0%,transparent 100%),
+    radial-gradient(1px 1px at 73% 48%,rgba(255,255,255,.4) 0%,transparent 100%)}
+.page{position:relative;z-index:1;min-height:100vh}
+.screen{display:none}
+.screen.active{display:flex;flex-direction:column;min-height:100vh}
+
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+@keyframes pop{0%{transform:scale(.4);opacity:0}80%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%,75%{transform:translateX(-5px)}50%{transform:translateX(5px)}}
+@keyframes up{from{transform:translateY(22px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes confetti{0%{transform:translateY(-10px) rotate(0);opacity:1}100%{transform:translateY(110px) rotate(540deg);opacity:0}}
+@keyframes xpfloat{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-44px);opacity:0}}
+
+/* ── WELCOME ── */
+#sw{align-items:center;justify-content:center;text-align:center;padding:2rem;gap:.4rem}
+.wlc-star{font-size:5rem;animation:float 3s ease-in-out infinite}
+.wlc-title{font-family:'Fredoka One',cursive;font-size:clamp(2.8rem,10vw,5rem);color:var(--gold);text-shadow:0 0 40px rgba(255,215,0,.4);animation:up .5s ease both}
+.wlc-sub{color:var(--muted);font-size:1rem;animation:up .5s .1s ease both;opacity:0;animation-fill-mode:forwards}
+.grade-balls{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin:.8rem 0 1.4rem;animation:up .5s .2s ease both;opacity:0;animation-fill-mode:forwards}
+.gball{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:1.5rem;color:#fff;animation:float 3s ease-in-out infinite}
+.gball:nth-child(2){animation-delay:.5s}.gball:nth-child(3){animation-delay:1s}.gball:nth-child(4){animation-delay:1.5s}
+.gb4{background:linear-gradient(135deg,#a855f7,#7c3aed);box-shadow:0 0 20px rgba(168,85,247,.45)}
+.gb5{background:linear-gradient(135deg,#00d4aa,#0891b2);box-shadow:0 0 20px rgba(0,212,170,.45)}
+.gb6{background:linear-gradient(135deg,#ff6b6b,#dc2626);box-shadow:0 0 20px rgba(255,107,107,.45)}
+.gb7{background:linear-gradient(135deg,#ffd700,#f59e0b);box-shadow:0 0 20px rgba(255,215,0,.45);color:#1a1a2e}
+.btn-go{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1a1a2e;border:none;padding:14px 48px;border-radius:50px;font-family:'Fredoka One',cursive;font-size:1.4rem;cursor:pointer;box-shadow:0 6px 24px rgba(255,215,0,.35);transition:all .2s;animation:up .5s .3s ease both;opacity:0;animation-fill-mode:forwards}
+.btn-go:hover{transform:scale(1.06)}
+.btn-go:active{transform:scale(.96)}
+.wlc-link{color:var(--muted);font-size:.84rem;margin-top:.5rem;cursor:pointer;text-decoration:underline;animation:up .5s .4s ease both;opacity:0;animation-fill-mode:forwards}
+
+/* ── SETUP ── */
+#sset{overflow-y:auto}
+.set-inner{max-width:500px;width:100%;margin:0 auto;padding:1.75rem 1.25rem}
+.set-hdr{text-align:center;margin-bottom:1.4rem}
+.scard{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:var(--r);padding:1.3rem;margin-bottom:.9rem}
+.scard-t{font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--teal);display:flex;align-items:center;gap:7px;margin-bottom:1rem}
+.cbox{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:var(--rs);padding:.9rem;margin-bottom:.5rem}
+.cbox-t{font-family:'Fredoka One',cursive;font-size:.9rem;margin-bottom:.7rem}
+.avrow{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px}
+.av{width:42px;height:42px;border-radius:50%;border:2.5px solid transparent;background:rgba(255,255,255,.07);font-size:1.35rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s}
+.av:hover{border-color:var(--teal);transform:scale(1.1)}
+.av.on{border-color:var(--gold);background:rgba(255,215,0,.15);transform:scale(1.12)}
+label{display:block;font-size:.72rem;font-weight:700;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em}
+input[type=text],select{width:100%;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:var(--rs);padding:10px 13px;color:var(--white);font-family:'Nunito',sans-serif;font-size:.92rem;font-weight:600;outline:none;transition:border-color .2s;margin-bottom:10px}
+input[type=text]:focus,select:focus{border-color:var(--teal)}
+input::placeholder{color:rgba(122,142,170,.45)}
+select option{background:#0f3460}
+.btn-save{width:100%;background:linear-gradient(135deg,var(--teal),var(--teal2));color:#041f19;border:none;padding:14px;border-radius:50px;font-family:'Fredoka One',cursive;font-size:1.2rem;cursor:pointer;transition:all .2s;box-shadow:0 4px 18px rgba(0,212,170,.28)}
+.btn-save:hover{transform:scale(1.03)}
+.btn-ghost{width:100%;background:transparent;border:1.5px solid rgba(255,255,255,.14);color:var(--muted);padding:11px;border-radius:50px;font-family:'Nunito',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;margin-top:.6rem;transition:all .15s}
+.btn-ghost:hover{border-color:rgba(255,255,255,.35);color:var(--white)}
+
+/* ── PLAYER SELECT ── */
+#spl{align-items:center;justify-content:center;text-align:center;padding:2rem;gap:.5rem}
+.ps-ico{font-size:3rem;animation:float 3s ease-in-out infinite}
+.ps-title{font-family:'Fredoka One',cursive;font-size:2.1rem;color:var(--gold)}
+.ps-sub{color:var(--muted);font-size:.88rem;margin-bottom:1.4rem}
+.ps-cards{display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.4rem}
+.ps-card{background:var(--card);border:2px solid rgba(255,255,255,.09);border-radius:22px;padding:1.6rem 1.3rem;cursor:pointer;transition:all .25s;width:175px;text-align:center}
+.ps-card:hover{border-color:var(--gold);transform:translateY(-7px);box-shadow:0 14px 38px rgba(255,215,0,.2)}
+.ps-av{font-size:3.6rem;display:block;margin-bottom:.7rem}
+.ps-name{font-family:'Fredoka One',cursive;font-size:1.3rem}
+.ps-grade{font-size:.76rem;color:var(--muted);margin-top:3px}
+.ps-pills{display:flex;align-items:center;justify-content:center;gap:5px;margin-top:9px;flex-wrap:wrap}
+.pill{border-radius:20px;padding:3px 10px;font-size:.74rem;font-weight:700}
+.pill-g{background:rgba(255,215,0,.14);color:var(--gold);border:1px solid rgba(255,215,0,.3)}
+.pill-r{background:rgba(255,107,107,.14);color:var(--coral);border:1px solid rgba(255,107,107,.3)}
+.ps-link{color:var(--muted);font-size:.82rem;cursor:pointer;text-decoration:underline}
+
+/* ── TOPBAR ── */
+.topbar{background:rgba(15,52,96,.93);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.08);padding:.65rem 1.2rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:sticky;top:0;z-index:50}
+.tb-l{display:flex;align-items:center;gap:8px}
+.tb-av{font-size:1.7rem}
+.tb-nm{font-family:'Fredoka One',cursive;font-size:.97rem}
+.tb-gr{font-size:.68rem;color:var(--muted)}
+.tb-r{display:flex;align-items:center;gap:8px}
+.tb-xp{background:rgba(255,215,0,.13);border:1px solid rgba(255,215,0,.28);border-radius:20px;padding:3px 12px;display:flex;align-items:center;gap:5px;font-weight:700;font-size:.8rem;color:var(--gold)}
+.tb-str{background:rgba(255,107,107,.13);border:1px solid rgba(255,107,107,.28);border-radius:20px;padding:3px 10px;font-weight:700;font-size:.8rem;color:var(--coral)}
+.lvlring{width:35px;height:35px;border-radius:50%;background:conic-gradient(var(--gold) var(--p,0%),rgba(255,255,255,.07) 0%);display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0}
+.lvlring::before{content:'';position:absolute;inset:4px;border-radius:50%;background:var(--bg2)}
+.lvln{position:relative;font-family:'Fredoka One',cursive;font-size:.86rem;color:var(--gold);z-index:1}
+.tb-sw{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:4px 12px;font-size:.73rem;color:var(--muted);cursor:pointer;font-weight:700;transition:all .15s}
+.tb-sw:hover{color:var(--white);border-color:rgba(255,255,255,.3)}
+
+/* ── HOME ── */
+#shm{overflow-y:auto}
+.hm-body{padding:1.25rem}
+.hm-strip{background:linear-gradient(135deg,rgba(255,215,0,.13),rgba(168,85,247,.09));border:1px solid rgba(255,215,0,.22);border-radius:var(--r);padding:1rem 1.2rem;display:flex;align-items:center;gap:12px;margin-bottom:1.25rem}
+.hs-av{font-size:2.8rem;flex-shrink:0;animation:float 3s ease-in-out infinite}
+.hs-nm{font-family:'Fredoka One',cursive;font-size:1.2rem}
+.hs-dt{font-size:.76rem;color:var(--muted);margin-top:2px}
+.hs-lv{margin-left:auto;text-align:right;flex-shrink:0}
+.hs-lvn{font-family:'Fredoka One',cursive;font-size:1.7rem;color:var(--gold);line-height:1}
+.hs-lvlbl{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.xpw{margin-bottom:1.25rem}
+.xpt{display:flex;justify-content:space-between;font-size:.73rem;color:var(--muted);margin-bottom:4px}
+.xptrack{height:11px;background:rgba(255,255,255,.07);border-radius:6px;overflow:hidden}
+.xpfill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--gold),var(--coral));transition:width .5s ease}
+.gtabs{display:flex;gap:.5rem;margin-bottom:1.2rem;flex-wrap:wrap}
+.gtab{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:20px;padding:7px 20px;font-family:'Fredoka One',cursive;font-size:.9rem;color:var(--muted);cursor:pointer;transition:all .2s;flex-shrink:0}
+.gtab.on{background:rgba(255,215,0,.15);border-color:var(--gold);color:var(--gold)}
+.sec-hd{font-family:'Fredoka One',cursive;font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.9rem}
+
+/* ★ BIG TOPIC BUTTONS ★ */
+.topic-list{display:flex;flex-direction:column;gap:.8rem}
+.tbtn{display:flex;align-items:stretch;width:100%;border:none;cursor:pointer;border-radius:var(--r);overflow:hidden;transition:transform .18s,box-shadow .18s;text-align:left;padding:0;background:none}
+.tbtn:hover{transform:translateY(-3px) scale(1.01)}
+.tbtn:active{transform:scale(.98)}
+.tbtn-slab{width:72px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:.6rem .4rem;min-height:80px}
+.tbtn-icon{font-size:2rem;line-height:1}
+.tbtn-ex{font-size:.6rem;font-weight:700;color:rgba(255,255,255,.75);text-align:center}
+.tbtn-body{flex:1;background:var(--card);padding:.9rem 1rem;display:flex;flex-direction:column;justify-content:center;min-height:80px}
+.tbtn-name{font-family:'Fredoka One',cursive;font-size:1.15rem;margin-bottom:3px}
+.tbtn-desc{font-size:.77rem;color:var(--muted);line-height:1.4;margin-bottom:6px}
+.tbtn-foot{display:flex;align-items:center;justify-content:space-between}
+.tbtn-stars{font-size:.82rem;letter-spacing:1px}
+.tbtn-arr{font-size:1.3rem;color:rgba(255,255,255,.3)}
+.ai-badge{background:linear-gradient(135deg,var(--purple),var(--teal));color:#fff;font-size:.62rem;font-weight:800;padding:2px 7px;border-radius:8px;margin-left:5px;vertical-align:middle}
+
+/* ── EXLIST ── */
+#sel{overflow-y:auto}
+.el-body{padding:1.2rem}
+.back-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--muted);font-family:'Nunito',sans-serif;font-weight:700;font-size:.86rem;cursor:pointer;padding:.4rem 0 .85rem;transition:color .15s}
+.back-btn:hover{color:var(--white)}
+.topic-hero{border-radius:var(--r);padding:1.3rem;margin-bottom:1rem;text-align:center}
+.th-icon{font-size:2.8rem;display:block;margin-bottom:.5rem}
+.th-name{font-family:'Fredoka One',cursive;font-size:1.45rem;margin-bottom:.25rem}
+.th-desc{font-size:.82rem;color:rgba(255,255,255,.6)}
+.sdiv{font-family:'Fredoka One',cursive;font-size:.74rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin:.9rem 0 .5rem}
+.ex-item{background:var(--card);border:1.5px solid rgba(255,255,255,.08);border-radius:var(--rs);padding:.9rem 1.1rem;margin-bottom:.65rem;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:.9rem}
+.ex-item:hover{border-color:rgba(255,255,255,.22);transform:translateX(5px)}
+.ex-icon{font-size:1.5rem;flex-shrink:0}
+.ex-info{flex:1}
+.ex-nm{font-family:'Fredoka One',cursive;font-size:.97rem;margin-bottom:2px}
+.ex-meta{font-size:.74rem;color:var(--muted)}
+.ex-xp{font-size:.68rem;font-weight:700;padding:2px 9px;border-radius:9px;flex-shrink:0}
+.ai-item{background:linear-gradient(135deg,rgba(168,85,247,.13),rgba(0,212,170,.08));border:1.5px solid rgba(168,85,247,.38);border-radius:var(--rs);padding:.9rem 1.1rem;margin-bottom:.65rem;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:.9rem}
+.ai-item:hover{border-color:var(--purple);transform:translateX(5px);box-shadow:0 0 20px rgba(168,85,247,.22)}
+
+/* ── QUIZ ── */
+#sqz{overflow-y:auto}
+.qz-body{max-width:600px;width:100%;margin:0 auto;padding:1.2rem}
+.qz-top{display:flex;align-items:center;gap:.8rem;margin-bottom:1.2rem}
+.qprog{flex:1;height:11px;background:rgba(255,255,255,.08);border-radius:6px;overflow:hidden}
+.qprog-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--teal),var(--purple));transition:width .4s ease}
+.qcnt{font-weight:700;font-size:.8rem;color:var(--muted);white-space:nowrap}
+.hearts{display:flex;gap:3px}
+.heart{font-size:1rem;transition:all .3s}
+.heart.lost{opacity:.18;filter:grayscale(1);transform:scale(.7)}
+.qcard{background:var(--card);border:1.5px solid rgba(255,255,255,.09);border-radius:var(--r);padding:1.6rem;animation:up .3s ease both}
+.qtopic{font-size:.68rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.qtext{font-size:1.08rem;font-weight:700;line-height:1.55;margin-bottom:1.3rem;color:var(--white)}
+.qtext strong{color:var(--gold)}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.11);border-radius:var(--rs);padding:11px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;color:var(--white);font-family:'Nunito',sans-serif;font-weight:700;font-size:.9rem;transition:all .14s;width:100%;text-align:left}
+.opt:hover:not(.locked){background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25);transform:translateX(4px)}
+.opt.sel{background:rgba(0,212,170,.11);border-color:var(--teal)}
+.opt.ok{background:rgba(74,222,128,.14);border-color:var(--green);animation:pop .3s ease}
+.opt.no{background:rgba(255,107,107,.14);border-color:var(--coral);animation:shake .4s ease}
+.opt.locked{cursor:default}
+.olet{width:29px;height:29px;border-radius:50%;background:rgba(255,255,255,.09);border:1.5px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:.8rem;flex-shrink:0;transition:all .14s}
+.opt.ok .olet{background:var(--green);border-color:var(--green);color:#0a2d14}
+.opt.no .olet{background:var(--coral);border-color:var(--coral);color:#3d0a0a}
+.opt.sel .olet{background:var(--teal);border-color:var(--teal);color:#0a2d25}
+.finp{width:100%;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.13);border-radius:var(--rs);padding:12px 14px;color:var(--white);font-family:'Nunito',sans-serif;font-size:.97rem;font-weight:700;outline:none;transition:border-color .2s}
+.finp:focus{border-color:var(--teal)}
+.finp.ok{border-color:var(--green);background:rgba(74,222,128,.09)}
+.finp.no{border-color:var(--coral);background:rgba(255,107,107,.09);animation:shake .4s ease}
+.finp::placeholder{color:rgba(122,142,170,.4)}
+.fb{margin-top:.9rem;padding:10px 14px;border-radius:var(--rs);font-weight:700;font-size:.86rem;display:none;animation:up .3s ease}
+.fb.show{display:block}
+.fb.ok{background:rgba(74,222,128,.11);border:1px solid rgba(74,222,128,.3);color:var(--green)}
+.fb.no{background:rgba(255,107,107,.11);border:1px solid rgba(255,107,107,.3);color:var(--coral)}
+.qacts{display:flex;gap:9px;margin-top:1.3rem;flex-wrap:wrap;align-items:center}
+.btn-chk{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#041f19;border:none;padding:12px 28px;border-radius:50px;font-family:'Fredoka One',cursive;font-size:1.05rem;cursor:pointer;transition:all .15s;box-shadow:0 4px 14px rgba(0,212,170,.28)}
+.btn-chk:hover{transform:scale(1.05)}
+.btn-nxt{background:linear-gradient(135deg,var(--purple),var(--purple2));color:#fff;border:none;padding:12px 24px;border-radius:50px;font-family:'Fredoka One',cursive;font-size:1.05rem;cursor:pointer;display:none;transition:all .15s;box-shadow:0 4px 14px rgba(168,85,247,.28)}
+.btn-nxt.show{display:inline-block;animation:pop .3s ease}
+.btn-nxt:hover{transform:scale(1.05)}
+.btn-hint{background:none;border:1.5px solid rgba(255,215,0,.32);color:var(--gold);border-radius:50px;padding:8px 16px;font-family:'Nunito',sans-serif;font-weight:700;font-size:.76rem;cursor:pointer;transition:all .15s}
+.btn-hint:hover{background:rgba(255,215,0,.1)}
+.ai-tag{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,rgba(168,85,247,.2),rgba(0,212,170,.13));border:1px solid rgba(168,85,247,.4);border-radius:11px;padding:3px 9px;font-size:.68rem;font-weight:700;color:var(--purple);margin-bottom:8px}
+
+/* ── RESULTS ── */
+#sres{align-items:center;justify-content:flex-start;overflow-y:auto;padding-bottom:2rem}
+.res-wrap{max-width:460px;width:100%;margin:0 auto;padding:2rem 1.25rem;text-align:center;animation:up .4s ease both}
+.res-em{font-size:5rem;display:block;margin-bottom:.7rem;animation:pop .5s ease}
+.res-pct{font-family:'Fredoka One',cursive;font-size:3.5rem;color:var(--gold);line-height:1;margin-bottom:3px}
+.res-msg{color:var(--muted);margin-bottom:1.5rem}
+.res-stars{font-size:2.3rem;margin-bottom:1.3rem}
+.res-xpbox{background:rgba(255,215,0,.11);border:1px solid rgba(255,215,0,.3);border-radius:var(--rs);padding:.85rem;margin-bottom:1.4rem}
+.res-xpn{font-family:'Fredoka One',cursive;font-size:2rem;color:var(--gold)}
+.res-xplbl{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.res-btns{display:flex;flex-direction:column;gap:.55rem;align-items:center}
+.rb{width:100%;max-width:270px;padding:12px 24px;border-radius:50px;font-family:'Fredoka One',cursive;font-size:1rem;cursor:pointer;transition:all .15s;border:none}
+.rb-retry{background:var(--card2);border:1.5px solid rgba(255,255,255,.16);color:var(--white)}
+.rb-retry:hover{border-color:rgba(255,255,255,.4)}
+.rb-more{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#041f19;box-shadow:0 4px 14px rgba(0,212,170,.25)}
+.rb-more:hover{transform:scale(1.04)}
+.rb-ai{background:linear-gradient(135deg,var(--purple),var(--teal));color:#fff;box-shadow:0 4px 14px rgba(168,85,247,.25)}
+.rb-ai:hover{transform:scale(1.04)}
+.rb-home{background:transparent;border:1.5px solid rgba(255,255,255,.14);color:var(--muted)}
+.rb-home:hover{color:var(--white);border-color:rgba(255,255,255,.35)}
+
+/* ── AI LOADING ── */
+.aiov{position:fixed;inset:0;background:rgba(10,14,30,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:200;backdrop-filter:blur(7px)}
+.aiorb-w{position:relative;width:82px;height:82px;margin-bottom:1.4rem}
+.aiorb{width:82px;height:82px;border-radius:50%;background:conic-gradient(var(--purple),var(--teal),var(--gold),var(--purple));animation:spin 1.1s linear infinite;box-shadow:0 0 38px rgba(168,85,247,.45)}
+.aiorb-in{position:absolute;inset:8px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:2rem}
+.aiov-t{font-family:'Fredoka One',cursive;font-size:1.3rem;color:var(--white);margin-bottom:4px;text-align:center}
+.aiov-s{color:var(--muted);font-size:.84rem;text-align:center;max-width:240px}
+.aidots{margin-top:.85rem}
+.aidots span{display:inline-block;width:7px;height:7px;border-radius:50%;margin:0 3px;animation:pulse 1.2s ease-in-out infinite}
+.aidots span:nth-child(1){background:var(--purple)}
+.aidots span:nth-child(2){background:var(--teal);animation-delay:.22s}
+.aidots span:nth-child(3){background:var(--gold);animation-delay:.44s}
+
+/* FX */
+.cconf{position:fixed;inset:0;pointer-events:none;z-index:999;overflow:hidden}
+.cp{position:absolute;top:-10px;animation:confetti 1.4s ease forwards}
+.xppop{position:fixed;font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--gold);pointer-events:none;z-index:999;animation:xpfloat 1s ease forwards}
+.toast{position:fixed;top:72px;right:1.1rem;background:var(--card);border:1px solid rgba(255,215,0,.4);border-radius:var(--rs);padding:10px 15px;display:flex;align-items:center;gap:10px;z-index:999;animation:up .4s ease;box-shadow:0 8px 28px rgba(0,0,0,.45);max-width:280px}
+.toast-ic{font-size:1.6rem}
+.toast-t{font-family:'Fredoka One',cursive;font-size:.9rem;color:var(--gold)}
+.toast-s{font-size:.74rem;color:var(--muted)}
+
+@media(max-width:430px){
+  .tbtn-slab{width:62px}
+  .tbtn-icon{font-size:1.7rem}
+  .tbtn-name{font-size:1.05rem}
+  .ps-card{width:148px}
+  .qcard{padding:1.2rem}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- WELCOME -->
+<div id="sw" class="screen active">
+  <span class="wlc-star">⭐</span>
+  <h1 class="wlc-title">EnglishStar</h1>
+  <p class="wlc-sub">Your journey to English stardom starts here! 🚀</p>
+  <div class="grade-balls">
+    <div class="gball gb4">4</div><div class="gball gb5">5</div>
+    <div class="gball gb6">6</div><div class="gball gb7">7</div>
+  </div>
+  <button class="btn-go" onclick="go('spl')">Let's Go! 🌟</button>
+  <span class="wlc-link" onclick="go('sset')">⚙️ Parent Setup</span>
+</div>
+
+<!-- SETUP -->
+<div id="sset" class="screen">
+  <div class="set-inner">
+    <div class="set-hdr">
+      <div style="font-size:2.5rem;margin-bottom:.4rem">⚙️</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:2rem;color:var(--gold)">Parent Setup</div>
+      <div style="color:var(--muted);font-size:.85rem;margin-top:.3rem">Set up profiles for up to 2 children</div>
+    </div>
+    <div class="scard">
+      <div class="scard-t">👩‍👧 Parent / Guardian</div>
+      <label>Your name</label>
+      <input type="text" id="pName" placeholder="e.g. Mrs Botha">
+    </div>
+    <div class="scard">
+      <div class="scard-t" style="color:var(--teal)">🌟 Child 1</div>
+      <div class="cbox">
+        <div class="cbox-t" style="color:var(--teal)">Choose an avatar</div>
+        <div class="avrow" id="avr1">
+          <div class="av on" data-v="🦁" onclick="pAv(1,this)">🦁</div>
+          <div class="av" data-v="🐯" onclick="pAv(1,this)">🐯</div>
+          <div class="av" data-v="🐸" onclick="pAv(1,this)">🐸</div>
+          <div class="av" data-v="🦊" onclick="pAv(1,this)">🦊</div>
+          <div class="av" data-v="🐧" onclick="pAv(1,this)">🐧</div>
+          <div class="av" data-v="🦋" onclick="pAv(1,this)">🦋</div>
+          <div class="av" data-v="🦄" onclick="pAv(1,this)">🦄</div>
+          <div class="av" data-v="🐉" onclick="pAv(1,this)">🐉</div>
+        </div>
+        <label>Child's name</label>
+        <input type="text" id="c1n" placeholder="e.g. Amahle">
+        <label>Grade</label>
+        <select id="c1g"><option value="4">Grade 4</option><option value="5">Grade 5</option><option value="6">Grade 6</option><option value="7">Grade 7</option></select>
+      </div>
+    </div>
+    <div class="scard">
+      <div class="scard-t" style="color:var(--purple)">🌟 Child 2 <span style="font-size:.73rem;color:var(--muted);font-weight:400">(optional)</span></div>
+      <div class="cbox">
+        <div class="cbox-t" style="color:var(--purple)">Choose an avatar</div>
+        <div class="avrow" id="avr2">
+          <div class="av on" data-v="🐼" onclick="pAv(2,this)">🐼</div>
+          <div class="av" data-v="🐨" onclick="pAv(2,this)">🐨</div>
+          <div class="av" data-v="🦉" onclick="pAv(2,this)">🦉</div>
+          <div class="av" data-v="🦩" onclick="pAv(2,this)">🦩</div>
+          <div class="av" data-v="🐬" onclick="pAv(2,this)">🐬</div>
+          <div class="av" data-v="🦅" onclick="pAv(2,this)">🦅</div>
+          <div class="av" data-v="🐲" onclick="pAv(2,this)">🐲</div>
+          <div class="av" data-v="🌺" onclick="pAv(2,this)">🌺</div>
+        </div>
+        <label>Child's name</label>
+        <input type="text" id="c2n" placeholder="Leave blank if only 1 child">
+        <label>Grade</label>
+        <select id="c2g"><option value="4">Grade 4</option><option value="5">Grade 5</option><option value="6">Grade 6</option><option value="7">Grade 7</option></select>
+      </div>
+    </div>
+    <button class="btn-save" onclick="doSave()">Save &amp; Continue 🚀</button>
+    <button class="btn-ghost" onclick="go('sw')">← Back</button>
+  </div>
+</div>
+
+<!-- PLAYER SELECT -->
+<div id="spl" class="screen">
+  <span class="ps-ico">⭐</span>
+  <div class="ps-title">Who's playing?</div>
+  <div class="ps-sub">Tap your name to start your adventure</div>
+  <div class="ps-cards" id="psCards"></div>
+  <span class="ps-link" onclick="go('sset')">⚙️ Parent setup</span>
+</div>
+
+<!-- HOME -->
+<div id="shm" class="screen">
+  <div class="topbar">
+    <div class="tb-l"><span class="tb-av" id="hAv"></span><div><div class="tb-nm" id="hNm"></div><div class="tb-gr" id="hGr"></div></div></div>
+    <div class="tb-r">
+      <div class="tb-xp">⭐ <span id="hXp">0</span></div>
+      <div class="tb-str" id="hStr">🔥 0</div>
+      <div class="lvlring" id="hRing" style="--p:0%"><span class="lvln" id="hLvl">1</span></div>
+      <button class="tb-sw" onclick="go('spl')">Switch</button>
+    </div>
+  </div>
+  <div class="hm-body">
+    <div class="hm-strip">
+      <span class="hs-av" id="hsAv"></span>
+      <div><div class="hs-nm" id="hsNm"></div><div class="hs-dt" id="hsDt"></div></div>
+      <div class="hs-lv"><div class="hs-lvn" id="hsLvN">1</div><div class="hs-lvlbl">Level</div></div>
+    </div>
+    <div class="xpw">
+      <div class="xpt"><span>XP Progress</span><span id="hXpLbl">0 XP</span></div>
+      <div class="xptrack"><div class="xpfill" id="hXpBar" style="width:0%"></div></div>
+    </div>
+    <div class="gtabs" id="hTabs"></div>
+    <div class="sec-hd">📚 Choose a topic to practise</div>
+    <div class="topic-list" id="hTopics"></div>
+  </div>
+</div>
+
+<!-- EXLIST -->
+<div id="sel" class="screen">
+  <div class="topbar">
+    <div class="tb-l"><span class="tb-av" id="elAv"></span><div class="tb-nm" id="elNm"></div></div>
+    <div class="tb-r"><div class="tb-xp">⭐ <span id="elXp">0</span></div><button class="tb-sw" onclick="go('shm')">← Home</button></div>
+  </div>
+  <div class="el-body" id="elBody"></div>
+</div>
+
+<!-- QUIZ -->
+<div id="sqz" class="screen">
+  <div class="topbar">
+    <div class="tb-l"><span class="tb-av" id="qzAv"></span><div class="tb-nm" id="qzNm"></div></div>
+    <div class="tb-r"><div class="tb-xp">⭐ <span id="qzXp">0</span></div><button class="tb-sw" onclick="quitQ()">✕ Quit</button></div>
+  </div>
+  <div class="qz-body">
+    <div class="qz-top">
+      <div class="hearts" id="qzH"></div>
+      <div class="qprog"><div class="qprog-fill" id="qzFill"></div></div>
+      <div class="qcnt" id="qzCnt">1/5</div>
+    </div>
+    <div class="qcard" id="qCard"></div>
+    <div class="qacts">
+      <button class="btn-chk" id="btnChk" onclick="chkAns()">Check ✓</button>
+      <button class="btn-nxt" id="btnNxt" onclick="nextQ()">Next →</button>
+      <button class="btn-hint" id="btnHnt" onclick="doHint()">💡 Hint</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="sres" class="screen">
+  <div class="res-wrap">
+    <span class="res-em" id="resEm">🏆</span>
+    <div class="res-pct" id="resPct">0%</div>
+    <div class="res-msg" id="resMsg"></div>
+    <div class="res-stars" id="resStars">⭐⭐⭐</div>
+    <div class="res-xpbox"><div class="res-xpn" id="resXpN">+0</div><div class="res-xplbl">XP Earned</div></div>
+    <div class="res-btns" id="resBtns"></div>
+  </div>
+</div>
+
+<!-- AI OVERLAY -->
+<div class="aiov" id="aiOv" style="display:none">
+  <div class="aiorb-w"><div class="aiorb"></div><div class="aiorb-in">🤖</div></div>
+  <div class="aiov-t">AI is making your questions...</div>
+  <div class="aiov-s" id="aiMsg">Thinking of fun challenges ✨</div>
+  <div class="aidots"><span></span><span></span><span></span></div>
+</div>
+<div class="cconf" id="cconf"></div>
+</div>
+
+<script>
+const GRADE_DATA = {
+  4: {
+    categories: [
+      {
+        id: "nouns", icon: "📦", name: "Nouns", color: "#534AB7", colorLight: "#EEEDFE",
+        desc: "Common, proper, countable & uncountable nouns",
+        exercises: [
+          {
+            title: "Common & Proper Nouns",
+            desc: "Identify whether each noun is a common noun or a proper noun.",
+            type: "mcq",
+            questions: [
+              { q: "Which word is a <strong>proper noun</strong>?", options: ["dog", "city", "Johannesburg", "table"], answer: 2, hint: "Proper nouns name specific people, places or things and start with a capital letter." },
+              { q: "Which word is a <strong>common noun</strong>?", options: ["Thabo", "school", "Monday", "Africa"], answer: 1, hint: "Common nouns name general things — not specific ones." },
+              { q: "Choose the sentence with a proper noun: <em>\"The ___ lives in ___\"</em>", options: ["cat, a house", "dog, Africa", "bird, a tree", "fish, water"], answer: 1, hint: "Africa is a specific place — a proper noun." },
+              { q: "Which of these is a <strong>countable noun</strong>?", options: ["sugar", "book", "water", "milk"], answer: 1, hint: "Countable nouns can be counted: one book, two books." },
+              { q: "Which of these is an <strong>uncountable noun</strong>?", options: ["chair", "pencil", "rice", "flower"], answer: 2, hint: "You can't say 'one rice' — it's uncountable." },
+            ]
+          },
+          {
+            title: "Abstract & Concrete Nouns",
+            desc: "Can you touch it? Concrete. Can you only feel it? Abstract.",
+            type: "mcq",
+            questions: [
+              { q: "Which word is an <strong>abstract noun</strong>?", options: ["chair", "love", "tree", "book"], answer: 1, hint: "Abstract nouns are things you can't touch — feelings, ideas." },
+              { q: "Which is a <strong>concrete noun</strong>?", options: ["happiness", "freedom", "desk", "anger"], answer: 2, hint: "Concrete nouns are physical things you can see or touch." },
+              { q: "\"She showed great <strong>courage</strong>.\" — What type is 'courage'?", options: ["Concrete", "Abstract", "Proper", "Compound"], answer: 1, hint: "You can't hold courage in your hand — it's abstract." },
+              { q: "Which pair contains ONE abstract and ONE concrete noun?", options: ["love + hate", "table + chair", "faith + stone", "joy + peace"], answer: 2, hint: "Stone is concrete (you can touch it); faith is abstract." },
+            ]
+          },
+          {
+            title: "Plural Nouns",
+            desc: "Make these nouns plural — add -s, -es, or use an irregular form.",
+            type: "fillin",
+            questions: [
+              { q: "What is the plural of <strong>box</strong>?", answer: "boxes", hint: "Words ending in -x add -es." },
+              { q: "What is the plural of <strong>child</strong>?", answer: "children", hint: "This is an irregular plural." },
+              { q: "What is the plural of <strong>tooth</strong>?", answer: "teeth", hint: "This is an irregular plural." },
+              { q: "What is the plural of <strong>bus</strong>?", answer: "buses", hint: "Words ending in -s, -sh, -ch, -x add -es." },
+              { q: "What is the plural of <strong>knife</strong>?", answer: "knives", hint: "Words ending in -fe change to -ves." },
+            ]
+          }
+        ]
+      },
+      {
+        id: "pronouns", icon: "🙋", name: "Pronouns", color: "#185FA5", colorLight: "#E6F1FB",
+        desc: "Personal, possessive & demonstrative pronouns",
+        exercises: [
+          {
+            title: "Personal Pronouns",
+            desc: "Replace the noun with the correct personal pronoun.",
+            type: "mcq",
+            questions: [
+              { q: "Replace the noun: <strong>\"Thabo is my friend.\"</strong> → ___ is my friend.", options: ["She", "He", "They", "It"], answer: 1, hint: "Thabo is a boy's name → use 'He'." },
+              { q: "<strong>\"Sonia and I went to school.\"</strong> → Replace 'Sonia and I' with one pronoun.", options: ["They", "We", "Us", "Them"], answer: 1, hint: "'We' replaces the subject 'Sonia and I'." },
+              { q: "Which pronoun replaces <strong>'the books'</strong>?", options: ["he", "she", "it", "they"], answer: 3, hint: "Plural objects use 'they'." },
+              { q: "\"Give ___ the pen.\" (referring to a girl)", options: ["him", "her", "them", "it"], answer: 1, hint: "Object pronoun for a girl = 'her'." },
+            ]
+          },
+          {
+            title: "Possessive & Demonstrative Pronouns",
+            desc: "Choose the correct pronoun to show ownership or point to something.",
+            type: "mcq",
+            questions: [
+              { q: "\"That bag is ___\" (belonging to me)", options: ["mine", "my", "me", "I"], answer: 0, hint: "Possessive pronouns stand alone — 'mine' not 'my'." },
+              { q: "\"___ book is on the table.\" (near me)", options: ["That", "Those", "This", "These"], answer: 2, hint: "'This' refers to a single thing close to you." },
+              { q: "\"___ are my pencils.\" (pointing to a group of pencils nearby)", options: ["This", "That", "These", "Those"], answer: 2, hint: "'These' = plural + near." },
+              { q: "\"The red car is ours, but the blue one is ___.\" (belonging to them)", options: ["their", "theirs", "them", "they"], answer: 1, hint: "'Theirs' is a possessive pronoun — stands alone." },
+            ]
+          }
+        ]
+      },
+      {
+        id: "adjectives", icon: "🎨", name: "Adjectives", color: "#D85A30", colorLight: "#FAECE7",
+        desc: "Describing words, comparatives & superlatives",
+        exercises: [
+          {
+            title: "Describing Nouns",
+            desc: "Find the adjective and understand what it tells us.",
+            type: "mcq",
+            questions: [
+              { q: "Which word is the adjective? \"The <strong>small</strong> cat sat on the <strong>old</strong> mat.\"", options: ["cat", "sat", "small", "on"], answer: 2, hint: "Adjectives describe nouns — 'small' describes the cat." },
+              { q: "\"She wore a <strong>red</strong> dress.\" — What does 'red' tell us?", options: ["Size", "Age", "Colour", "Shape"], answer: 2 },
+              { q: "Add the correct adjective: \"The weather was ___.\" (describing temperature)", options: ["quickly", "hot", "run", "under"], answer: 1, hint: "Adjectives describe a noun or pronoun — weather can be hot or cold." },
+              { q: "Which sentence uses an adjective AFTER the noun?", options: ["The tall boy ran.", "She is clever.", "A red flower bloomed.", "The big dog barked."], answer: 1, hint: "'She is clever' — 'clever' comes after 'is' (predicate adjective)." },
+            ]
+          },
+          {
+            title: "Comparatives & Superlatives",
+            desc: "Compare things using -er and -est forms.",
+            type: "fillin",
+            questions: [
+              { q: "Comparative form of <strong>big</strong>:", answer: "bigger", hint: "Double the final consonant: big → bigger." },
+              { q: "Superlative form of <strong>tall</strong>:", answer: "tallest", hint: "Add -est: tall → tallest." },
+              { q: "Comparative form of <strong>fast</strong>:", answer: "faster", hint: "Simply add -er." },
+              { q: "Superlative form of <strong>happy</strong>:", answer: "happiest", hint: "Words ending in -y: change y to i, add -est." },
+            ]
+          }
+        ]
+      },
+      {
+        id: "verbs", icon: "⚡", name: "Verbs", color: "#BA7517", colorLight: "#FAEEDA",
+        desc: "Action verbs, 'to be', regular & irregular verbs",
+        exercises: [
+          {
+            title: "Identifying Verbs",
+            desc: "Find the verb (action or state) in each sentence.",
+            type: "mcq",
+            questions: [
+              { q: "\"The girl <strong>runs</strong> to school.\" — What type of word is 'runs'?", options: ["Noun", "Adjective", "Verb", "Adverb"], answer: 2 },
+              { q: "Which word is the verb? \"The teacher <strong>explains</strong> the lesson clearly.\"", options: ["teacher", "lesson", "clearly", "explains"], answer: 3 },
+              { q: "\"She <strong>is</strong> happy today.\" — 'Is' is a form of which verb?", options: ["to run", "to be", "to have", "to go"], answer: 1, hint: "am, is, are, was, were are all forms of 'to be'." },
+              { q: "\"Stop!\" — This uses the ___ form of the verb.", options: ["past tense", "future tense", "command form", "question form"], answer: 2 },
+            ]
+          },
+          {
+            title: "Regular & Irregular Verbs",
+            desc: "Write the correct past tense form.",
+            type: "fillin",
+            questions: [
+              { q: "Past tense of <strong>walk</strong>:", answer: "walked", hint: "Regular: add -ed." },
+              { q: "Past tense of <strong>run</strong>:", answer: "ran", hint: "Irregular verb — run → ran." },
+              { q: "Past tense of <strong>eat</strong>:", answer: "ate", hint: "Irregular verb — eat → ate." },
+              { q: "Past tense of <strong>play</strong>:", answer: "played", hint: "Regular: add -ed." },
+              { q: "Past tense of <strong>go</strong>:", answer: "went", hint: "Irregular verb — go → went." },
+            ]
+          }
+        ]
+      },
+      {
+        id: "adverbs", icon: "💨", name: "Adverbs", color: "#3B6D11", colorLight: "#EAF3DE",
+        desc: "Adverbs of time, place, manner & frequency",
+        exercises: [
+          {
+            title: "Types of Adverbs",
+            desc: "Identify what each adverb tells us.",
+            type: "mcq",
+            questions: [
+              { q: "\"She sings <strong>beautifully</strong>.\" — This adverb tells us:", options: ["When", "Where", "How", "How often"], answer: 2, hint: "Adverbs of manner answer 'How?'" },
+              { q: "\"He arrived <strong>yesterday</strong>.\" — This adverb tells us:", options: ["How", "Where", "How often", "When"], answer: 3, hint: "Adverbs of time answer 'When?'" },
+              { q: "\"She <strong>often</strong> visits her grandmother.\" — This adverb tells us:", options: ["When", "How often", "Where", "How"], answer: 1, hint: "Often, always, never = adverbs of frequency." },
+              { q: "\"The children played <strong>here</strong>.\" — This adverb tells us:", options: ["When", "How often", "Where", "How"], answer: 2, hint: "Here/there = adverbs of place." },
+              { q: "\"It is <strong>very</strong> hot today.\" — 'Very' is an adverb of:", options: ["Time", "Manner", "Degree", "Frequency"], answer: 2, hint: "'Very' intensifies the adjective — adverb of degree." },
+            ]
+          }
+        ]
+      },
+      {
+        id: "prepositions", icon: "📍", name: "Prepositions", color: "#993556", colorLight: "#FBEAF0",
+        desc: "Position, direction & time prepositions",
+        exercises: [
+          {
+            title: "Prepositions of Position & Direction",
+            desc: "Choose the correct preposition.",
+            type: "mcq",
+            questions: [
+              { q: "The cat sat ___ the mat.", options: ["in", "on", "at", "from"], answer: 1, hint: "On shows that something is resting on a surface." },
+              { q: "She walked ___ the door.", options: ["on", "in", "through", "at"], answer: 2 },
+              { q: "The ball is ___ the table.", options: ["above", "under", "from", "with"], answer: 1, hint: "Under means below." },
+              { q: "He ran ___ school.", options: ["in", "at", "to", "on"], answer: 2, hint: "'To' shows direction of movement." },
+              { q: "\"Meet me ___ 3 o'clock.\" — which preposition of time?", options: ["on", "in", "at", "from"], answer: 2, hint: "At is used for specific times." },
+            ]
+          }
+        ]
+      },
+      {
+        id: "tenses", icon: "⏰", name: "Tenses", color: "#534AB7", colorLight: "#EEEDFE",
+        desc: "Simple present, past & future tenses",
+        exercises: [
+          {
+            title: "Identifying Tenses",
+            desc: "Identify whether each sentence is in the past, present or future tense.",
+            type: "mcq",
+            questions: [
+              { q: "\"She <strong>walks</strong> to school every day.\"", options: ["Past tense", "Present tense", "Future tense"], answer: 1 },
+              { q: "\"He <strong>played</strong> football yesterday.\"", options: ["Past tense", "Present tense", "Future tense"], answer: 0 },
+              { q: "\"We <strong>will visit</strong> the museum tomorrow.\"", options: ["Past tense", "Present tense", "Future tense"], answer: 2 },
+              { q: "\"The birds <strong>are singing</strong> in the tree.\" — This is:", options: ["Simple past", "Present progressive", "Future", "Past progressive"], answer: 1, hint: "Am/is/are + -ing = present progressive." },
+              { q: "\"I <strong>am going</strong> to Cape Town next week.\" This uses future expressed as:", options: ["Simple future", "Present progressive for future", "Past tense", "Command form"], answer: 1 },
+            ]
+          }
+        ]
+      },
+      {
+        id: "punctuation", icon: "✏️", name: "Punctuation & Spelling", color: "#888780", colorLight: "#F1EFE8",
+        desc: "Full stops, commas, capital letters & spelling",
+        exercises: [
+          {
+            title: "Punctuation",
+            desc: "Choose the correctly punctuated sentence.",
+            type: "mcq",
+            questions: [
+              { q: "Which sentence is correctly punctuated?", options: ["she likes cats, dogs and fish.", "She likes cats, dogs and fish.", "She likes cats dogs and fish.", "she likes cats dogs and fish"], answer: 1, hint: "Start with a capital. Use commas in a list. End with a full stop." },
+              { q: "Where does the question mark go? \"what is your name\"", options: ["What is your name.", "What is your name!", "What is your name?", "what is your name?"], answer: 2 },
+              { q: "Which name is correctly capitalised?", options: ["thabo sithole", "Thabo Sithole", "thabo Sithole", "THABO SITHOLE"], answer: 1 },
+              { q: "\"She said ___ Hello ___\" — Add the correct punctuation marks.", options: [". .", ", .", ': "', '" "'], answer: 2, hint: "Use a colon or comma before a direct speech quote, then quotation marks." },
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  5: {
+    categories: [
+      {
+        id: "nouns5", icon: "📦", name: "Nouns", color: "#534AB7", colorLight: "#EEEDFE",
+        desc: "Noun prefixes, suffixes, possessive & compound nouns",
+        exercises: [
+          {
+            title: "Noun Prefixes & Suffixes",
+            desc: "Recognise how prefixes and suffixes change nouns.",
+            type: "mcq",
+            questions: [
+              { q: "Add a suffix to make a noun: <strong>happy</strong> → ___", options: ["happiness", "happily", "unhappy", "happier"], answer: 0, hint: "-ness turns adjectives into nouns." },
+              { q: "The prefix 'un-' in <strong>unhappiness</strong> means:", options: ["again", "not", "before", "after"], answer: 1 },
+              { q: "Which is a <strong>compound noun</strong>?", options: ["quickly", "football", "happy", "red"], answer: 1, hint: "Compound nouns are two words joined: foot + ball." },
+              { q: "The possessive form of <strong>the teacher</strong>:", options: ["the teachers", "the teacher's", "the teachers'", "the teacher"], answer: 1, hint: "One teacher → add 's." },
+              { q: "The possessive form of <strong>the teachers</strong> (plural):", options: ["the teacher's", "the teachers'", "the teachers's", "the teacher"], answer: 1, hint: "Plural already ends in s → just add the apostrophe after." },
+            ]
+          }
+        ]
+      },
+      {
+        id: "pronouns5", icon: "🙋", name: "Pronouns", color: "#185FA5", colorLight: "#E6F1FB",
+        desc: "Personal, possessive & reflexive pronouns",
+        exercises: [
+          {
+            title: "Reflexive Pronouns",
+            desc: "Use -self/-selves pronouns correctly.",
+            type: "mcq",
+            questions: [
+              { q: "\"She did the work ___\" (by herself, alone)", options: ["herself", "himself", "themselves", "itself"], answer: 0 },
+              { q: "\"They built the house ___\" (by themselves)", options: ["yourself", "itself", "themselves", "ourselves"], answer: 2 },
+              { q: "\"I hurt ___ when I fell.\"", options: ["me", "myself", "mine", "I"], answer: 1, hint: "The subject and object are the same person — use reflexive." },
+              { q: "\"We enjoyed ___ at the party.\"", options: ["us", "our", "ourselves", "ours"], answer: 2 },
+            ]
+          }
+        ]
+      },
+      {
+        id: "adjectives5", icon: "🎨", name: "Adjectives", color: "#D85A30", colorLight: "#FAECE7",
+        desc: "Comparatives, superlatives & types of adjectives",
+        exercises: [
+          {
+            title: "Comparatives & Superlatives",
+            desc: "Use the correct form to compare.",
+            type: "mcq",
+            questions: [
+              { q: "\"This is the ___ cake I've ever eaten!\" (good)", options: ["gooder", "more good", "best", "better"], answer: 2, hint: "Irregular: good → better → best." },
+              { q: "\"My bag is ___ than yours.\" (heavy)", options: ["more heavy", "heaviest", "heavier", "most heavy"], answer: 2 },
+              { q: "\"She is the ___ person in the class.\" (tall)", options: ["taller", "more tall", "tallest", "most tall"], answer: 2 },
+              { q: "\"This book is ___ than the other one.\" (interesting)", options: ["interestinger", "most interesting", "more interesting", "interestingest"], answer: 2, hint: "Long adjectives use 'more' for comparative." },
+            ]
+          }
+        ]
+      },
+      {
+        id: "verbs5", icon: "⚡", name: "Verbs", color: "#BA7517", colorLight: "#FAEEDA",
+        desc: "Finite & infinite verbs, subject-verb agreement",
+        exercises: [
+          {
+            title: "Subject-Verb Agreement",
+            desc: "Make sure the verb matches its subject.",
+            type: "mcq",
+            questions: [
+              { q: "\"The boys ___ in the garden.\" (play)", options: ["plays", "play", "played", "playing"], answer: 1, hint: "Plural subject (boys) → base form of verb." },
+              { q: "\"She ___ her homework every evening.\" (do)", options: ["do", "done", "does", "doing"], answer: 2, hint: "Third person singular → add -s." },
+              { q: "\"There ___ two books on the table.\"", options: ["is", "are", "was", "am"], answer: 1, hint: "Two books is plural → are." },
+              { q: "\"The team ___ playing well.\" (considering team as one unit)", options: ["are", "is", "were", "have"], answer: 1 },
+              { q: "\"Neither the teacher nor the students ___ ready.\"", options: ["is", "are", "was", "were"], answer: 1, hint: "When 'neither...nor' joins a plural noun closest to the verb, use plural." },
+            ]
+          },
+          {
+            title: "Finite & Infinite Verbs",
+            desc: "Identify finite (changes with subject/tense) and infinite verbs.",
+            type: "mcq",
+            questions: [
+              { q: "\"She <strong>loves</strong> to read.\" — Which is the finite verb?", options: ["loves", "to read", "both", "neither"], answer: 0, hint: "Finite verbs change with person and tense. 'Loves' = 3rd person singular present." },
+              { q: "\"He wants <strong>to go</strong> home.\" — 'to go' is:", options: ["Finite verb", "Infinitive", "Past tense", "Progressive"], answer: 1 },
+              { q: "Which sentence contains an infinitive?", options: ["She dances.", "They ran fast.", "I like to swim.", "He is tired."], answer: 2 },
+            ]
+          }
+        ]
+      },
+      {
+        id: "adverbs5", icon: "💨", name: "Adverbs", color: "#3B6D11", colorLight: "#EAF3DE",
+        desc: "Adverbs of manner, degree, frequency & place",
+        exercises: [
+          {
+            title: "Adverbs in Sentences",
+            desc: "Choose the correct adverb for each gap.",
+            type: "mcq",
+            questions: [
+              { q: "\"She is ___ clever.\" (a very high degree)", options: ["sometimes", "extremely", "yesterday", "there"], answer: 1, hint: "Extremely is an adverb of degree." },
+              { q: "\"He ___ forgets his homework.\" (nearly always)", options: ["never", "often", "rarely", "always"], answer: 3 },
+              { q: "\"Speak ___\" (the opposite of loudly)", options: ["quickly", "softly", "here", "now"], answer: 1 },
+              { q: "\"The children played ___.\" (in that place)", options: ["quickly", "often", "there", "then"], answer: 2 },
+            ]
+          }
+        ]
+      },
+      {
+        id: "conjunctions5", icon: "🔗", name: "Conjunctions", color: "#993556", colorLight: "#FBEAF0",
+        desc: "Connecting words: and, but, or, because, although",
+        exercises: [
+          {
+            title: "Using Conjunctions",
+            desc: "Choose the best conjunction to connect the sentences.",
+            type: "mcq",
+            questions: [
+              { q: "\"She was tired ___ she kept on working.\"", options: ["and", "because", "but", "or"], answer: 2, hint: "'But' shows contrast." },
+              { q: "\"He stayed home ___ he was sick.\"", options: ["but", "or", "because", "and"], answer: 2 },
+              { q: "\"Would you like tea ___ coffee?\"", options: ["and", "but", "because", "or"], answer: 3 },
+              { q: "\"___ it was raining, we still went outside.\"", options: ["Because", "Although", "And", "Or"], answer: 1, hint: "'Although' introduces a contrast at the start of a sentence." },
+              { q: "\"She studied hard ___ passed the exam.\"", options: ["but", "or", "and", "although"], answer: 2 },
+            ]
+          }
+        ]
+      },
+      {
+        id: "tenses5", icon: "⏰", name: "Tenses", color: "#534AB7", colorLight: "#EEEDFE",
+        desc: "Present, past, future & present perfect",
+        exercises: [
+          {
+            title: "Present Perfect Tense",
+            desc: "Use have/has + past participle for recent or ongoing past actions.",
+            type: "mcq",
+            questions: [
+              { q: "\"She ___ just eaten lunch.\"", options: ["has", "have", "had", "is"], answer: 0, hint: "She = 3rd person singular → has." },
+              { q: "\"We ___ never visited Cape Town.\"", options: ["has", "have", "had", "are"], answer: 1, hint: "We = plural → have." },
+              { q: "\"He ___ lost his keys.\"", options: ["have", "has", "had", "was"], answer: 1 },
+              { q: "Which sentence uses the present perfect correctly?", options: ["She has go to school.", "She have gone to school.", "She has gone to school.", "She gone to school."], answer: 2 },
+            ]
+          }
+        ]
+      },
+      {
+        id: "wordmeaning5", icon: "📖", name: "Word Meaning", color: "#888780", colorLight: "#F1EFE8",
+        desc: "Synonyms, antonyms, idioms, similes & personification",
+        exercises: [
+          {
+            title: "Synonyms & Antonyms",
+            desc: "Find words with similar or opposite meanings.",
+            type: "mcq",
+            questions: [
+              { q: "A synonym for <strong>happy</strong>:", options: ["sad", "angry", "joyful", "tired"], answer: 2 },
+              { q: "An antonym for <strong>strong</strong>:", options: ["powerful", "weak", "tall", "fast"], answer: 1 },
+              { q: "A synonym for <strong>big</strong>:", options: ["tiny", "short", "large", "few"], answer: 2 },
+              { q: "An antonym for <strong>ancient</strong>:", options: ["old", "modern", "large", "quiet"], answer: 1 },
+            ]
+          },
+          {
+            title: "Idioms & Similes",
+            desc: "Understand figurative language.",
+            type: "mcq",
+            questions: [
+              { q: "\"She ran as fast as <strong>the wind</strong>.\" This is a:", options: ["Metaphor", "Simile", "Idiom", "Personification"], answer: 1, hint: "Similes compare using 'as' or 'like'." },
+              { q: "\"It's raining cats and dogs.\" This means:", options: ["Animals are falling", "It is raining very heavily", "Cats and dogs are outside", "The weather is nice"], answer: 1, hint: "Idioms have figurative meanings — not literal." },
+              { q: "\"The sun smiled down on us.\" This is:", options: ["A simile", "An idiom", "Personification", "A metaphor"], answer: 2, hint: "Personification gives human qualities to non-human things." },
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  6: {
+    categories: [
+      {
+        id: "nouns6", icon: "📦", name: "Nouns", color: "#534AB7", colorLight: "#EEEDFE",
+        desc: "Abstract, concrete, gender forms & possessive nouns",
+        exercises: [
+          {
+            title: "Gender Forms of Nouns",
+            desc: "Match the masculine and feminine forms.",
+            type: "fillin",
+            questions: [
+              { q: "The feminine form of <strong>king</strong>:", answer: "queen", hint: "King ↔ queen." },
+              { q: "The feminine form of <strong>actor</strong>:", answer: "actress", hint: "actor → actress." },
+              { q: "The masculine form of <strong>cow</strong>:", answer: "bull", hint: "cow ↔ bull." },
+              { q: "The feminine form of <strong>prince</strong>:", answer: "princess" },
+              { q: "The masculine form of <strong>hen</strong>:", answer: "cock", hint: "hen ↔ cock or rooster." },
+            ]
+          }
+        ]
+      },
+      {
+        id: "pronouns6", icon: "🙋", name: "Pronouns", color: "#185FA5", colorLight: "#E6F1FB",
+        desc: "All pronoun types including relative pronouns",
+        exercises: [
+          {
+            title: "Relative Pronouns",
+            desc: "Use who, which, that correctly.",
+            type: "mcq",
+            questions: [
+              { q: "\"The woman ___ called me is my aunt.\"", options: ["which", "that", "who", "whom"], answer: 2, hint: "'Who' is used for people." },
+              { q: "\"The book ___ I read was interesting.\"", options: ["who", "whom", "which", "whose"], answer: 2, hint: "'Which' is used for things." },
+              { q: "\"The dog ___ we found was hungry.\"", options: ["who", "which", "that", "whom"], answer: 2, hint: "'That' can be used for people or things informally." },
+              { q: "\"She is the girl ___ bag was stolen.\"", options: ["who", "which", "that", "whose"], answer: 3, hint: "'Whose' shows possession." },
+            ]
+          }
+        ]
+      },
+      {
+        id: "adjectives6", icon: "🎨", name: "Adjectives", color: "#D85A30", colorLight: "#FAECE7",
+        desc: "Demonstrative, interrogative & predicate adjectives",
+        exercises: [
+          {
+            title: "Demonstrative Adjectives",
+            desc: "This, that, these, those — used before nouns.",
+            type: "mcq",
+            questions: [
+              { q: "\"___ dogs are noisy.\" (nearby, plural)", options: ["That", "This", "These", "Those"], answer: 2 },
+              { q: "\"___ mountain in the distance is beautiful.\" (far, singular)", options: ["This", "These", "That", "Those"], answer: 2 },
+              { q: "\"___ are my best friends.\" (nearby, plural)", options: ["This", "That", "These", "Those"], answer: 2 },
+              { q: "Demonstrative adjectives differ from demonstrative pronouns because:", options: ["They replace nouns", "They come before a noun", "They express ownership", "They describe verbs"], answer: 1 },
+            ]
+          }
+        ]
+      },
+      {
+        id: "verbs6", icon: "⚡", name: "Verbs", color: "#BA7517", colorLight: "#FAEEDA",
+        desc: "Phrasal verbs, command form & present perfect",
+        exercises: [
+          {
+            title: "Phrasal Verbs",
+            desc: "A verb + preposition/adverb that creates a new meaning.",
+            type: "mcq",
+            questions: [
+              { q: "\"Please <strong>turn off</strong> the lights.\" — 'turn off' means:", options: ["rotate", "switch off", "turn around", "go away"], answer: 1 },
+              { q: "\"She <strong>gave up</strong> trying.\" — 'give up' means:", options: ["gave a gift", "quit/stop", "gave back", "moved up"], answer: 1 },
+              { q: "\"The plane will <strong>take off</strong> at 10.\" — 'take off' means:", options: ["remove clothes", "steal", "leave the ground", "take something away"], answer: 2 },
+              { q: "\"He <strong>looked up</strong> the word.\" — 'look up' means:", options: ["looked at the sky", "found in a dictionary", "looked carefully", "ignored"], answer: 1 },
+            ]
+          }
+        ]
+      },
+      {
+        id: "adverbs6", icon: "💨", name: "Adverbs", color: "#3B6D11", colorLight: "#EAF3DE",
+        desc: "Adverbs modifying adjectives, verbs & other adverbs",
+        exercises: [
+          {
+            title: "Adverbs Modifying Adjectives",
+            desc: "Adverbs don't only modify verbs — they also modify adjectives.",
+            type: "mcq",
+            questions: [
+              { q: "\"It is <strong>extremely</strong> cold.\" Here 'extremely' modifies:", options: ["a verb", "an adverb", "an adjective", "a noun"], answer: 2, hint: "'Extremely' tells us more about 'cold'." },
+              { q: "\"She spoke <strong>very quickly</strong>.\" Here 'very' modifies:", options: ["a verb", "an adjective", "another adverb", "a noun"], answer: 2, hint: "'Very' modifies 'quickly', another adverb." },
+              { q: "\"He is <strong>quite</strong> smart.\" 'Quite' is an adverb of:", options: ["Time", "Place", "Degree", "Manner"], answer: 2 },
+            ]
+          }
+        ]
+      },
+      {
+        id: "conjunctions6", icon: "🔗", name: "Conjunctions", color: "#993556", colorLight: "#FBEAF0",
+        desc: "Coordinating & subordinating conjunctions",
+        exercises: [
+          {
+            title: "Coordinating vs Subordinating",
+            desc: "FANBOYS = coordinating. Others = subordinating.",
+            type: "mcq",
+            questions: [
+              { q: "\"She studied hard, <strong>so</strong> she passed.\" — 'so' is a:", options: ["Subordinating conjunction", "Coordinating conjunction", "Preposition", "Adverb"], answer: 1, hint: "FANBOYS: For, And, Nor, But, Or, Yet, So." },
+              { q: "\"<strong>Although</strong> it rained, we played outside.\" — 'Although' is a:", options: ["Coordinating conjunction", "Subordinating conjunction", "Pronoun", "Adverb"], answer: 1 },
+              { q: "\"<strong>Because</strong> she was ill, she stayed home.\" — this creates a:", options: ["Main clause only", "Dependent clause + main clause", "Two main clauses", "No clauses"], answer: 1 },
+              { q: "Which is a coordinating conjunction?", options: ["because", "although", "but", "unless"], answer: 2 },
+            ]
+          }
+        ]
+      },
+      {
+        id: "prepositions6", icon: "📍", name: "Prepositions", color: "#993556", colorLight: "#FBEAF0",
+        desc: "Prepositions of time, place, direction & possession",
+        exercises: [
+          {
+            title: "Prepositions in Context",
+            desc: "Choose the correct preposition.",
+            type: "mcq",
+            questions: [
+              { q: "\"She was born ___ 15 June.\"", options: ["at", "in", "on", "from"], answer: 2, hint: "'On' is used with specific dates." },
+              { q: "\"He arrived ___ the morning.\"", options: ["on", "at", "in", "from"], answer: 2, hint: "'In' is used with parts of the day." },
+              { q: "\"The cat jumped ___ the wall.\"", options: ["in", "at", "over", "from"], answer: 2 },
+              { q: "\"The book belongs ___ her.\"", options: ["at", "to", "in", "on"], answer: 1, hint: "'To' shows possession in this case." },
+              { q: "\"School starts ___ 8 o'clock.\"", options: ["in", "on", "at", "from"], answer: 2 },
+            ]
+          }
+        ]
+      },
+      {
+        id: "tenses6", icon: "⏰", name: "Tenses", color: "#534AB7", colorLight: "#EEEDFE",
+        desc: "Present perfect, past progressive & tense consistency",
+        exercises: [
+          {
+            title: "Past Progressive Tense",
+            desc: "Was/were + verb-ing = action in progress in the past.",
+            type: "mcq",
+            questions: [
+              { q: "\"She ___ reading when I called.\"", options: ["reads", "was reading", "is reading", "read"], answer: 1, hint: "Past progressive = was/were + -ing." },
+              { q: "\"They ___ playing football all afternoon.\"", options: ["are playing", "were playing", "played", "play"], answer: 1 },
+              { q: "\"While he ___ sleeping, the phone rang.\"", options: ["slept", "sleeps", "was sleeping", "is sleeping"], answer: 2 },
+              { q: "Which sentence uses the past progressive?", options: ["She danced.", "She was dancing.", "She dances.", "She has danced."], answer: 1 },
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  7: {
+    categories: [
+      {
+        id: "nouns7", icon: "📦", name: "Nouns", color: "#534AB7", colorLight: "#EEEDFE",
+        desc: "Collective nouns, complex nouns & predicate nouns",
+        exercises: [
+          {
+            title: "Collective Nouns",
+            desc: "A collective noun names a group of people, animals or things.",
+            type: "fillin",
+            questions: [
+              { q: "A ___ of lions.", answer: "pride", hint: "A pride of lions." },
+              { q: "A ___ of fish.", answer: "school", hint: "A school of fish." },
+              { q: "A ___ of birds.", answer: "flock", hint: "A flock of birds." },
+              { q: "A ___ of cows.", answer: "herd" },
+              { q: "A ___ of soldiers.", answer: "army" },
+            ]
+          }
+        ]
+      },
+      {
+        id: "pronouns7", icon: "🙋", name: "Pronouns", color: "#185FA5", colorLight: "#E6F1FB",
+        desc: "Relative, interrogative & indefinite pronouns",
+        exercises: [
+          {
+            title: "Interrogative Pronouns",
+            desc: "Who, what, which, whom, whose — used in questions.",
+            type: "mcq",
+            questions: [
+              { q: "\"___ is calling?\" (asking about a person)", options: ["What", "Which", "Who", "Whose"], answer: 2 },
+              { q: "\"___ book is this?\" (asking about ownership)", options: ["Who", "Whom", "Whose", "Which"], answer: 2 },
+              { q: "\"___ did she speak to?\" (asking about a person as object)", options: ["Who", "Whom", "Whose", "Which"], answer: 1, hint: "'Whom' is the object form of 'who'." },
+              { q: "\"___ happened at the game?\" (asking about an event)", options: ["Who", "Whom", "Whose", "What"], answer: 3 },
+            ]
+          }
+        ]
+      },
+      {
+        id: "adjectives7", icon: "🎨", name: "Adjectives", color: "#D85A30", colorLight: "#FAECE7",
+        desc: "Comparative, superlative & adjectival clauses",
+        exercises: [
+          {
+            title: "Adjectival Clauses",
+            desc: "A clause that describes a noun, introduced by who/which/that.",
+            type: "mcq",
+            questions: [
+              { q: "\"The man <strong>who won the race</strong> is my uncle.\" The adjectival clause is:", options: ["The man", "is my uncle", "who won the race", "my uncle"], answer: 2, hint: "It describes 'the man'." },
+              { q: "\"The book <strong>that I read</strong> was boring.\" — This clause modifies:", options: ["read", "boring", "I", "the book"], answer: 3 },
+              { q: "Which sentence contains an adjectival clause?", options: ["She ran quickly.", "The girl who spoke first won.", "He ate his lunch.", "They went home."], answer: 1 },
+            ]
+          }
+        ]
+      },
+      {
+        id: "verbs7", icon: "⚡", name: "Verbs", color: "#BA7517", colorLight: "#FAEEDA",
+        desc: "Transitive, intransitive, auxiliary & passive voice",
+        exercises: [
+          {
+            title: "Active & Passive Voice",
+            desc: "In active voice, the subject does the action. In passive, the subject receives it.",
+            type: "mcq",
+            questions: [
+              { q: "\"The dog bit the boy.\" This is:", options: ["Passive voice", "Active voice"], answer: 1, hint: "The subject (dog) performs the action." },
+              { q: "\"The boy was bitten by the dog.\" This is:", options: ["Active voice", "Passive voice"], answer: 1, hint: "The subject (boy) receives the action." },
+              { q: "Change to passive: \"She wrote the letter.\"", options: ["The letter wrote she.", "The letter was written by her.", "She was written the letter.", "The letter is written."], answer: 1 },
+              { q: "\"The window was broken.\" — In passive voice, by whom was it broken?", options: ["The window", "We know from the sentence", "We don't know — it is not stated", "The verb 'was'"], answer: 2 },
+            ]
+          },
+          {
+            title: "Transitive & Intransitive Verbs",
+            desc: "Transitive verbs need an object. Intransitive verbs do not.",
+            type: "mcq",
+            questions: [
+              { q: "\"She kicked the ball.\" — 'kicked' is:", options: ["Intransitive", "Transitive", "Auxiliary", "Linking"], answer: 1, hint: "'The ball' is the object — it receives the action." },
+              { q: "\"He slept.\" — 'slept' is:", options: ["Transitive", "Intransitive", "Auxiliary", "Passive"], answer: 1, hint: "No object needed — you can't 'sleep something'." },
+              { q: "\"They built a house.\" — 'built' is:", options: ["Intransitive", "Linking", "Transitive", "Auxiliary"], answer: 2 },
+            ]
+          }
+        ]
+      },
+      {
+        id: "adverbs7", icon: "💨", name: "Adverbs & Adverbial Clauses", color: "#3B6D11", colorLight: "#EAF3DE",
+        desc: "Adverbs of manner & time; adverbial clauses",
+        exercises: [
+          {
+            title: "Adverbial Clauses",
+            desc: "A clause that modifies a verb, telling when, why, how or where.",
+            type: "mcq",
+            questions: [
+              { q: "\"She left <strong>before the show ended</strong>.\" This adverbial clause tells:", options: ["Why", "Where", "When", "How"], answer: 2 },
+              { q: "\"He failed <strong>because he didn't study</strong>.\" This clause tells:", options: ["When", "Why", "Where", "How"], answer: 1 },
+              { q: "\"They played <strong>as if they were champions</strong>.\" This clause tells:", options: ["When", "Why", "Where", "How"], answer: 3 },
+              { q: "Which word introduces an adverbial clause of place?", options: ["because", "although", "where", "until"], answer: 2 },
+            ]
+          }
+        ]
+      },
+      {
+        id: "conjunctions7", icon: "🔗", name: "Conjunctions & Clauses", color: "#993556", colorLight: "#FBEAF0",
+        desc: "Main & dependent clauses, compound & complex sentences",
+        exercises: [
+          {
+            title: "Compound & Complex Sentences",
+            desc: "Build sentences using coordination and subordination.",
+            type: "mcq",
+            questions: [
+              { q: "\"She studied, and she passed.\" This is a:", options: ["Simple sentence", "Complex sentence", "Compound sentence", "Compound-complex sentence"], answer: 2, hint: "Two main clauses joined by 'and' = compound." },
+              { q: "\"Although she was tired, she finished the race.\" This is a:", options: ["Simple sentence", "Compound sentence", "Complex sentence", "Fragment"], answer: 2, hint: "Main clause + dependent clause = complex." },
+              { q: "Which part is the DEPENDENT clause? \"He left early <strong>because he was sick</strong>.\"", options: ["He left early", "because he was sick", "both parts", "neither part"], answer: 1 },
+              { q: "A main (independent) clause:", options: ["Cannot stand alone", "Can stand alone as a sentence", "Starts with 'because'", "Has no verb"], answer: 1 },
+            ]
+          }
+        ]
+      },
+      {
+        id: "prepositions7", icon: "📍", name: "Prepositions", color: "#993556", colorLight: "#FBEAF0",
+        desc: "Prepositions of time, place & prepositional phrases",
+        exercises: [
+          {
+            title: "Prepositional Phrases",
+            desc: "A preposition + noun phrase = a prepositional phrase.",
+            type: "mcq",
+            questions: [
+              { q: "Identify the prepositional phrase: \"She put the book <strong>on the shelf</strong>.\"", options: ["She put", "the book", "on the shelf", "on"], answer: 2, hint: "Prep phrase = preposition + noun phrase." },
+              { q: "\"He arrived <strong>before dawn</strong>.\" — This is a prepositional phrase of:", options: ["Place", "Time", "Manner", "Cause"], answer: 1 },
+              { q: "\"They hid <strong>behind the wall</strong>.\" — This phrase tells us:", options: ["When", "How", "Where", "Why"], answer: 2 },
+              { q: "Which word is the preposition? \"He walked <strong>across</strong> the bridge.\"", options: ["He", "walked", "across", "bridge"], answer: 2 },
+            ]
+          }
+        ]
+      },
+      {
+        id: "tenses7", icon: "⏰", name: "Tenses & Direct Speech", color: "#534AB7", colorLight: "#EEEDFE",
+        desc: "Direct/indirect speech & tense sequencing",
+        exercises: [
+          {
+            title: "Direct & Indirect Speech",
+            desc: "Change between reporting actual words and summarising them.",
+            type: "mcq",
+            questions: [
+              { q: "\"'I am tired,' she said.\" Change to indirect speech:", options: ["She said she am tired.", "She said she is tired.", "She said she was tired.", "She said she were tired."], answer: 2, hint: "In indirect speech, 'am/is' changes to 'was'." },
+              { q: "\"He said, 'I will come tomorrow.'\" → Indirect:", options: ["He said he will come tomorrow.", "He said he would come the next day.", "He said he comes tomorrow.", "He said he came tomorrow."], answer: 1, hint: "'Will' → 'would'; 'tomorrow' → 'the next day'." },
+              { q: "Which sentence is in DIRECT speech?", options: ["She said she was happy.", "He told me he would help.", "\"I love reading,\" she said.", "They said the test was hard."], answer: 2, hint: "Direct speech uses quotation marks around the exact words." },
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
+
+// ── STATE ──
+let profiles=[],player=null,curGrade=4,curCat=null,curEx=null;
+let qIdx=0,hearts=3,score=0,xpG=0,selOpt=null,isAI=false;
+
+// ── STORAGE ──
+function save(){try{localStorage.setItem('es4',JSON.stringify(profiles))}catch(e){}}
+function load(){try{const d=localStorage.getItem('es4');if(d)profiles=JSON.parse(d)}catch(e){profiles=[]}}
+
+// ── SCREENS ──
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='spl') renderPlayers();
+  if(id==='shm') renderHome();
+  if(id==='sel') renderExList();
+}
+
+// ── SETUP ──
+const avS={1:'🦁',2:'🐼'};
+function pAv(c,el){el.closest('.avrow').querySelectorAll('.av').forEach(a=>a.classList.remove('on'));el.classList.add('on');avS[c]=el.dataset.v}
+function doSave(){
+  const pN=document.getElementById('pName').value.trim();
+  const c1n=document.getElementById('c1n').value.trim();
+  const c1g=+document.getElementById('c1g').value;
+  const c2n=document.getElementById('c2n').value.trim();
+  const c2g=+document.getElementById('c2g').value;
+  if(!c1n){alert('Please enter a name for Child 1!');return}
+  profiles=[];
+  profiles.push({id:1,name:c1n,grade:c1g,av:avS[1],xp:0,streak:0,done:{},parent:pN||'Parent'});
+  if(c2n)profiles.push({id:2,name:c2n,grade:c2g,av:avS[2],xp:0,streak:0,done:{},parent:pN||'Parent'});
+  save();go('spl');
+}
+
+// ── PLAYER SELECT ──
+function renderPlayers(){
+  load();
+  const w=document.getElementById('psCards');
+  if(!profiles.length){
+    w.innerHTML=`<div style="text-align:center;color:var(--muted);padding:2rem">
+      <div style="font-size:3rem;margin-bottom:1rem">👋</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--white);margin-bottom:.5rem">No profiles yet!</div>
+      <div style="font-size:.88rem;margin-bottom:1.4rem">Ask a parent to set up your profile first.</div>
+      <button class="btn-go" style="font-size:1rem;padding:11px 26px" onclick="go('sset')">⚙️ Go to Setup</button>
+    </div>`;return;
+  }
+  w.innerHTML=profiles.map(p=>{
+    const lv=Math.floor(p.xp/100)+1;
+    const td=Object.values(p.done||{}).reduce((a,b)=>a+b,0);
+    return `<div class="ps-card" onclick="selP(${p.id})">
+      <span class="ps-av">${p.av}</span>
+      <div class="ps-name">${p.name}</div>
+      <div class="ps-grade">Grade ${p.grade}</div>
+      <div class="ps-pills">
+        <span class="pill pill-g">⭐ ${p.xp} XP</span>
+        ${p.streak>0?`<span class="pill pill-r">🔥 ${p.streak}</span>`:''}
+      </div>
+      <div style="font-size:.7rem;color:var(--muted);margin-top:7px">Level ${lv} · ${td} done</div>
+    </div>`;
+  }).join('');
+}
+function selP(id){load();player=profiles.find(p=>p.id===id);if(!player)return;curGrade=player.grade;go('shm')}
+
+// ── HOME ──
+function renderHome(){
+  if(!player){go('spl');return}
+  const lv=Math.floor(player.xp/100)+1,xpIn=player.xp%100;
+  document.getElementById('hAv').textContent=player.av;
+  document.getElementById('hNm').textContent=player.name;
+  document.getElementById('hGr').textContent='Grade '+player.grade;
+  document.getElementById('hXp').textContent=player.xp;
+  document.getElementById('hStr').textContent='🔥 '+(player.streak||0);
+  document.getElementById('hLvl').textContent=lv;
+  document.getElementById('hRing').style.setProperty('--p',xpIn+'%');
+  document.getElementById('hsAv').textContent=player.av;
+  document.getElementById('hsNm').textContent='Hi, '+player.name+'! 👋';
+  document.getElementById('hsDt').textContent='Grade '+player.grade+' · '+player.parent;
+  document.getElementById('hsLvN').textContent=lv;
+  document.getElementById('hXpLbl').textContent=player.xp+' XP · Level '+lv;
+  document.getElementById('hXpBar').style.width=xpIn+'%';
+  document.getElementById('hTabs').innerHTML=[4,5,6,7].map(g=>
+    `<div class="gtab ${g===curGrade?'on':''}" onclick="swGrade(${g})">Grade ${g}</div>`
+  ).join('');
+  renderTopics();
+}
+
+function swGrade(g){curGrade=g;document.querySelectorAll('.gtab').forEach((t,i)=>t.classList.toggle('on',i===g-4));renderTopics()}
+
+function h2r(h,a){const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return `rgba(${r},${g},${b},${a})`}
+
+function renderTopics(){
+  const cats=GRADE_DATA[curGrade].categories;
+  let html=`<button class="tbtn" onclick="showAIPicker()" style="box-shadow:0 4px 18px rgba(168,85,247,.2)">
+    <div class="tbtn-slab" style="background:linear-gradient(160deg,#7c3aed,#009e80)">
+      <span class="tbtn-icon">🤖</span><span class="tbtn-ex">AI</span>
+    </div>
+    <div class="tbtn-body" style="border:1.5px solid rgba(168,85,247,.35);border-left:none;background:linear-gradient(135deg,rgba(168,85,247,.12),rgba(0,212,170,.07))">
+      <span class="tbtn-name" style="color:#a855f7">AI Challenge <span class="ai-badge">NEW</span></span>
+      <span class="tbtn-desc">Fresh AI-generated questions every time · +50 XP</span>
+      <div class="tbtn-foot"><span></span><span class="tbtn-arr">›</span></div>
+    </div>
+  </button>`;
+  html+=cats.map((c,i)=>{
+    const tot=c.exercises.length,done=(player.done&&player.done[c.id])||0;
+    const stars='⭐'.repeat(Math.min(done,tot))+(done<tot?'☆'.repeat(tot-done):'');
+    const isH=c.color.startsWith('#');
+    const slabBg=isH?`linear-gradient(160deg,${c.color},${h2r(c.color,.6)})`:c.color;
+    const bdr=isH?h2r(c.color,.3):'rgba(255,255,255,.15)';
+    return `<button class="tbtn" onclick="openCat(${i})" style="box-shadow:0 4px 18px ${isH?h2r(c.color,.18):'rgba(255,255,255,.05)'}">
+      <div class="tbtn-slab" style="background:${slabBg}">
+        <span class="tbtn-icon">${c.icon}</span><span class="tbtn-ex">${tot} ex</span>
+      </div>
+      <div class="tbtn-body" style="border:1.5px solid ${bdr};border-left:none">
+        <span class="tbtn-name" style="color:${c.color}">${c.name}</span>
+        <span class="tbtn-desc">${c.desc}</span>
+        <div class="tbtn-foot"><span class="tbtn-stars">${stars}</span><span class="tbtn-arr">›</span></div>
+      </div>
+    </button>`;
+  }).join('');
+  document.getElementById('hTopics').innerHTML=html;
+}
+
+// ── AI PICKER ──
+function showAIPicker(){
+  const cats=GRADE_DATA[curGrade].categories;
+  setElBar();
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sel').classList.add('active');
+  window.scrollTo(0,0);
+  document.getElementById('elBody').innerHTML=`
+    <button class="back-btn" onclick="go('shm')">← Back</button>
+    <div class="topic-hero" style="background:linear-gradient(135deg,rgba(168,85,247,.18),rgba(0,212,170,.1));border:1.5px solid rgba(168,85,247,.3)">
+      <span class="th-icon">🤖</span>
+      <div class="th-name" style="color:var(--purple)">AI Challenge</div>
+      <div class="th-desc">Pick a topic — the AI makes 5 fresh questions just for you!</div>
+    </div>
+    <div class="sdiv">Grade ${curGrade} Topics</div>
+    ${cats.map((c,i)=>`<div class="ai-item" onclick="curCat=GRADE_DATA[curGrade].categories[${i}];startAI()">
+      <span class="ex-icon">${c.icon}</span>
+      <div class="ex-info"><div class="ex-nm" style="color:${c.color}">${c.name} <span class="ai-badge">AI</span></div><div class="ex-meta">${c.desc}</div></div>
+      <span style="font-size:1.1rem;color:rgba(255,255,255,.35)">›</span>
+    </div>`).join('')}`;
+}
+
+// ── OPEN CATEGORY ──
+function openCat(i){curCat=GRADE_DATA[curGrade].categories[i];go('sel')}
+function setElBar(){
+  document.getElementById('elAv').textContent=player?player.av:'';
+  document.getElementById('elNm').textContent=player?player.name:'';
+  document.getElementById('elXp').textContent=player?player.xp:0;
+}
+function renderExList(){
+  if(!player||!curCat)return;
+  setElBar();
+  const done=(player.done&&player.done[curCat.id])||0;
+  const isH=curCat.color.startsWith('#');
+  const heroBg=isH?h2r(curCat.color,.12):'rgba(255,255,255,.05)';
+  document.getElementById('elBody').innerHTML=`
+    <button class="back-btn" onclick="go('shm')">← Back to topics</button>
+    <div class="topic-hero" style="background:${heroBg};border-top:4px solid ${curCat.color}">
+      <span class="th-icon">${curCat.icon}</span>
+      <div class="th-name" style="color:${curCat.color}">${curCat.name}</div>
+      <div class="th-desc">${curCat.desc}</div>
+    </div>
+    <div class="ai-item" onclick="startAI()">
+      <span class="ex-icon">🤖</span>
+      <div class="ex-info"><div class="ex-nm" style="color:var(--purple)">AI Challenge <span class="ai-badge">NEW</span></div><div class="ex-meta">Fresh AI questions every time · 5 questions · +50 XP</div></div>
+      <span style="font-size:1.3rem">✨</span>
+    </div>
+    <div class="sdiv">Practice Sets</div>
+    ${curCat.exercises.map((ex,i)=>{
+      const isDone=done>i;
+      return `<div class="ex-item" onclick="startEx(${i})">
+        <span class="ex-icon">${ex.type==='mcq'?'🎯':'✍️'}</span>
+        <div class="ex-info"><div class="ex-nm">${ex.title}</div><div class="ex-meta">${ex.questions.length} questions · ${ex.type==='mcq'?'Multiple choice':'Fill in the blank'}</div></div>
+        <span class="ex-xp" style="background:${curCat.colorLight};color:${curCat.color}">+${ex.xpReward} XP</span>
+        ${isDone?'<span style="font-size:1.1rem">⭐</span>':''}
+      </div>`;
+    }).join('')}`;
+}
+
+// ── QUIZ ──
+function startEx(i){isAI=false;curEx=curCat.exercises[i];qIdx=0;hearts=3;score=0;xpG=0;selOpt=null;go('sqz');setQBar();renderQ()}
+function setQBar(){document.getElementById('qzAv').textContent=player.av;document.getElementById('qzNm').textContent=player.name;document.getElementById('qzXp').textContent=player.xp}
+function renderHearts(){document.getElementById('qzH').innerHTML=[1,2,3].map(i=>`<span class="heart ${i>hearts?'lost':''}">❤️</span>`).join('')}
+function renderQ(){
+  const q=curEx.questions[qIdx],tot=curEx.questions.length;
+  document.getElementById('qzFill').style.width=(qIdx/tot*100)+'%';
+  document.getElementById('qzCnt').textContent=(qIdx+1)+'/'+tot;
+  renderHearts();
+  document.getElementById('btnChk').style.display='inline-block';
+  document.getElementById('btnNxt').classList.remove('show');
+  document.getElementById('btnHnt').style.display=q.hint?'inline-block':'none';
+  selOpt=null;
+  let b=(isAI?'<div class="ai-tag">🤖 AI Challenge · fresh questions!</div>':'')+
+    `<div class="qtopic">${curCat.name}</div><div class="qtext">${q.q}</div>`;
+  if(curEx.type==='mcq'){
+    b+='<div class="opts">'+q.options.map((o,i)=>
+      `<button class="opt" id="op${i}" onclick="selOp(${i})"><span class="olet">${String.fromCharCode(65+i)}</span>${o}</button>`
+    ).join('')+'</div>';
+  } else {
+    b+='<input class="finp" id="finp" type="text" placeholder="Type your answer..." onkeydown="if(event.key==='Enter')chkAns()">';
+  }
+  b+='<div class="fb" id="fb"></div>';
+  const card=document.getElementById('qCard');
+  card.innerHTML=b;card.style.animation='none';
+  setTimeout(()=>{card.style.animation='up .3s ease both'},10);
+  if(curEx.type==='fillin')setTimeout(()=>{const e=document.getElementById('finp');if(e)e.focus()},200);
+}
+function selOp(i){
+  if(document.querySelector('.opt.ok')||document.querySelector('.opt.no'))return;
+  selOpt=i;document.querySelectorAll('.opt').forEach((b,j)=>b.classList.toggle('sel',j===i));
+}
+function chkAns(){
+  const q=curEx.questions[qIdx],fb=document.getElementById('fb');
+  let ok=false;
+  if(curEx.type==='mcq'){
+    if(selOpt===null){fb.textContent='Pick an answer first! 👆';fb.className='fb show no';return}
+    ok=selOpt===q.answer;
+    document.querySelectorAll('.opt').forEach((b,i)=>{b.classList.add('locked');if(i===q.answer)b.classList.add('ok');else if(i===selOpt&&!ok)b.classList.add('no')});
+  } else {
+    const inp=document.getElementById('finp');
+    if(!inp||!inp.value.trim()){fb.textContent='Type your answer first! ✏️';fb.className='fb show no';return}
+    ok=inp.value.trim().toLowerCase()===q.answer.toLowerCase();
+    inp.classList.add(ok?'ok':'no');inp.disabled=true;
+  }
+  if(ok){
+    score++;const xp=Math.round(curEx.xpReward/curEx.questions.length);xpG+=xp;
+    fb.innerHTML=`✅ Correct! <span style="color:var(--gold)">+${xp} XP</span>`;fb.className='fb show ok';popXP(xp);
+  } else {
+    hearts--;renderHearts();
+    fb.innerHTML=`❌ Not quite. Answer: <strong style="color:var(--gold)">${curEx.type==='mcq'?q.options[q.answer]:q.answer}</strong>${q.hint?'<br><span style="opacity:.8;font-size:.82rem">💡 '+q.hint+'</span>':''}`;
+    fb.className='fb show no';
+    if(hearts<=0){setTimeout(()=>endQuiz(),1200);return}
+  }
+  document.getElementById('btnChk').style.display='none';
+  document.getElementById('btnNxt').classList.add('show');
+  document.getElementById('btnHnt').style.display='none';
+}
+function doHint(){const q=curEx.questions[qIdx];if(!q.hint)return;document.getElementById('fb').innerHTML='💡 '+q.hint;document.getElementById('fb').className='fb show no';document.getElementById('btnHnt').style.display='none'}
+function nextQ(){qIdx++;if(qIdx>=curEx.questions.length)endQuiz();else renderQ()}
+function quitQ(){if(confirm('Quit this exercise?'))go('sel')}
+
+// ── RESULTS ──
+function endQuiz(){
+  if(!player)return;
+  const tot=curEx.questions.length,pct=Math.round(score/tot*100);
+  if(xpG>0){const ol=Math.floor(player.xp/100)+1;player.xp+=xpG;const nl=Math.floor(player.xp/100)+1;if(nl>ol)setTimeout(()=>toast('🎉','Level Up!','You reached Level '+nl+'!'),700)}
+  if(!player.done)player.done={};
+  if(pct>=60){player.done[curCat.id]=(player.done[curCat.id]||0)+1;player.streak=(player.streak||0)+1;if(player.streak%5===0)setTimeout(()=>toast('🔥','Hot Streak!',player.streak+' in a row!'),1100)}
+  const idx=profiles.findIndex(p=>p.id===player.id);if(idx>=0)profiles[idx]=player;save();
+  let em,msg;
+  if(pct>=90){em='🏆';msg='INCREDIBLE! You are a star! ⭐'}
+  else if(pct>=70){em='🎉';msg='Great job! Keep it up! 💪'}
+  else if(pct>=50){em='👍';msg='Good try! Practice makes perfect!'}
+  else{em='💪';msg='Keep going — you will get it!'}
+  document.getElementById('resEm').textContent=em;
+  document.getElementById('resPct').textContent=pct+'%';
+  document.getElementById('resMsg').textContent=msg;
+  document.getElementById('resStars').textContent=pct>=90?'⭐⭐⭐':pct>=70?'⭐⭐☆':'⭐☆☆';
+  document.getElementById('resXpN').textContent='+'+xpG;
+  document.getElementById('resBtns').innerHTML=`
+    <button class="rb rb-retry" onclick="retryQ()">🔄 Try Again</button>
+    ${isAI?'<button class="rb rb-ai" onclick="startAI()">🤖 New AI Challenge</button>':''}
+    <button class="rb rb-more" onclick="go('sel')">More Exercises</button>
+    <button class="rb rb-home" onclick="go('shm')">🏠 Home</button>`;
+  go('sres');if(pct>=70)setTimeout(confetti,250);
+}
+function retryQ(){qIdx=0;hearts=3;score=0;xpG=0;selOpt=null;go('sqz');setQBar();renderQ()}
+
+// ── AI CHALLENGE ──
+const AI_MSGS=['Cooking up tricky questions... 🍳','Asking the stars for ideas... ⭐','Building your challenge... 🔨','Almost ready! 🚀','Making it extra fun... 📚'];
+let aiT;
+async function startAI(){
+  if(!player||!curCat)return;
+  showAIOv(true);
+  const p=`You are an English teacher creating a fun quiz for a Grade ${player.grade} South African English FAL student.\n\nTopic: ${curCat.name} (${curCat.desc})\n\nGenerate exactly 5 multiple-choice questions about "${curCat.name}" for Grade ${player.grade} FAL.\n\nRules:\n- Match CAPS curriculum for Grade ${player.grade}\n- Simple friendly language for a child\n- 4 options per question\n- One correct answer (index 0-3)\n- Short helpful hint\n- Use SA context (Thabo, Amahle, Cape Town, Joburg)\n- Fun with emojis sometimes\n\nRespond ONLY with JSON array, no markdown:\n[{"q":"question","options":["A","B","C","D"],"answer":0,"hint":"hint"}]`;
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:p}]})});
+    const data=await res.json();
+    let txt=(data.content||[]).map(b=>b.text||'').join('').replace(/```json|```/g,'').trim();
+    const qs=JSON.parse(txt);
+    if(!Array.isArray(qs)||!qs.length)throw new Error('bad');
+    showAIOv(false);isAI=true;
+    curEx={title:'🤖 AI: '+curCat.name,type:'mcq',xpReward:50,questions:qs.slice(0,5)};
+    qIdx=0;hearts=3;score=0;xpG=0;selOpt=null;
+    go('sqz');setQBar();renderQ();
+  }catch(e){showAIOv(false);toast('😬','Oops!','Could not load AI questions. Check your connection.')}
+}
+function showAIOv(show){
+  document.getElementById('aiOv').style.display=show?'flex':'none';
+  if(show){let i=0;document.getElementById('aiMsg').textContent=AI_MSGS[0];aiT=setInterval(()=>{i=(i+1)%AI_MSGS.length;document.getElementById('aiMsg').textContent=AI_MSGS[i]},1800)}
+  else clearInterval(aiT);
+}
+
+// ── FX ──
+function popXP(xp){const e=document.createElement('div');e.className='xppop';e.textContent='+'+xp+'⭐';e.style.cssText=`top:${55+Math.random()*30}px;right:${65+Math.random()*55}px`;document.body.appendChild(e);setTimeout(()=>e.remove(),1050)}
+function confetti(){
+  const cols=['#ffd700','#00d4aa','#a855f7','#ff6b6b','#4ade80','#f59e0b'],c=document.getElementById('cconf');
+  for(let i=0;i<48;i++){const p=document.createElement('div');p.className='cp';p.style.cssText=`left:${Math.random()*100}%;background:${cols[~~(Math.random()*cols.length)]};border-radius:${Math.random()>.5?'50%':'2px'};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;animation-delay:${Math.random()*.65}s;animation-duration:${1.1+Math.random()*.9}s`;c.appendChild(p);setTimeout(()=>p.remove(),2200)}
+}
+let toastT;
+function toast(ic,t,s){const ex=document.querySelector('.toast');if(ex)ex.remove();clearTimeout(toastT);const el=document.createElement('div');el.className='toast';el.innerHTML=`<span class="toast-ic">${ic}</span><div><div class="toast-t">${t}</div><div class="toast-s">${s}</div></div>`;document.body.appendChild(el);toastT=setTimeout(()=>el.remove(),3500)}
+
+// ── INIT ──
+load();
+if(profiles.length>0)go('spl');
+</script>
+</body>
+</html>
