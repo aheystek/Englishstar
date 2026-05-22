@@ -42,19 +42,19 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 /* ── WELCOME ── */
 #sw{align-items:center;justify-content:center;text-align:center;padding:2rem;gap:.4rem}
 .wlc-star{font-size:5rem;animation:float 3s ease-in-out infinite}
-.wlc-title{font-family:'Fredoka One',cursive;font-size:clamp(2.8rem,10vw,5rem);color:var(--gold);text-shadow:0 0 40px rgba(255,215,0,.4);animation:up .5s ease both}
-.wlc-sub{color:var(--muted);font-size:1rem;animation:up .5s .1s ease both;opacity:0;animation-fill-mode:forwards}
-.grade-balls{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin:.8rem 0 1.4rem;animation:up .5s .2s ease both;opacity:0;animation-fill-mode:forwards}
+.wlc-title{font-family:'Fredoka One',cursive;font-size:clamp(2.8rem,10vw,5rem);color:var(--gold);text-shadow:0 0 40px rgba(255,215,0,.4);}
+.wlc-sub{color:var(--muted);font-size:1rem;}
+.grade-balls{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin:.8rem 0 1.4rem;}
 .gball{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:1.5rem;color:#fff;animation:float 3s ease-in-out infinite}
 .gball:nth-child(2){animation-delay:.5s}.gball:nth-child(3){animation-delay:1s}.gball:nth-child(4){animation-delay:1.5s}
 .gb4{background:linear-gradient(135deg,#a855f7,#7c3aed);box-shadow:0 0 20px rgba(168,85,247,.45)}
 .gb5{background:linear-gradient(135deg,#00d4aa,#0891b2);box-shadow:0 0 20px rgba(0,212,170,.45)}
 .gb6{background:linear-gradient(135deg,#ff6b6b,#dc2626);box-shadow:0 0 20px rgba(255,107,107,.45)}
 .gb7{background:linear-gradient(135deg,#ffd700,#f59e0b);box-shadow:0 0 20px rgba(255,215,0,.45);color:#1a1a2e}
-.btn-go{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1a1a2e;border:none;padding:14px 48px;border-radius:50px;font-family:'Fredoka One',cursive;font-size:1.4rem;cursor:pointer;box-shadow:0 6px 24px rgba(255,215,0,.35);transition:all .2s;animation:up .5s .3s ease both;opacity:0;animation-fill-mode:forwards}
+.btn-go{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1a1a2e;border:none;padding:14px 48px;border-radius:50px;font-family:'Fredoka One',cursive;font-size:1.4rem;cursor:pointer;box-shadow:0 6px 24px rgba(255,215,0,.35);transition:all .2s;}
 .btn-go:hover{transform:scale(1.06)}
 .btn-go:active{transform:scale(.96)}
-.wlc-link{color:var(--muted);font-size:.84rem;margin-top:.5rem;cursor:pointer;text-decoration:underline;animation:up .5s .4s ease both;opacity:0;animation-fill-mode:forwards}
+.wlc-link{color:var(--muted);font-size:.84rem;margin-top:.5rem;cursor:pointer;text-decoration:underline;}
 
 /* ── SETUP ── */
 #sset{overflow-y:auto}
@@ -1282,7 +1282,7 @@ function renderQ(){
       `<button class="opt" id="op${i}" onclick="selOp(${i})"><span class="olet">${String.fromCharCode(65+i)}</span>${o}</button>`
     ).join('')+'</div>';
   } else {
-    b+='<input class="finp" id="finp" type="text" placeholder="Type your answer..." onkeydown="if(event.key==='Enter')chkAns()">';
+  b+=`<input class="finp" id="finp" type="text" placeholder="Type your answer..." onkeydown="if(event.key==='Enter')chkAns()">`;
   }
   b+='<div class="fb" id="fb"></div>';
   const card=document.getElementById('qCard');
