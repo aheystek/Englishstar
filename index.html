@@ -56,6 +56,26 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .btn-go:active{transform:scale(.96)}
 .wlc-link{color:var(--muted);font-size:.84rem;margin-top:.5rem;cursor:pointer;text-decoration:underline;}
 
+/* ── PASSWORD SCREEN ── */
+#spw{align-items:center;justify-content:center;text-align:center;padding:2rem;gap:.6rem}
+.pw-icon{font-size:4rem;animation:float 3s ease-in-out infinite}
+.pw-title{font-family:'Fredoka One',cursive;font-size:2rem;color:var(--gold)}
+.pw-sub{color:var(--muted);font-size:.9rem;max-width:300px;line-height:1.5}
+.pw-box{background:var(--card);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);padding:1.75rem;margin-top:.5rem;width:100%;max-width:360px}
+.pw-inp{width:100%;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.15);border-radius:var(--rs);padding:14px;color:var(--white);font-family:'Fredoka One',cursive;font-size:1.4rem;text-align:center;letter-spacing:.3em;outline:none;transition:border-color .2s;margin-bottom:1rem}
+.pw-inp:focus{border-color:var(--gold)}
+.pw-inp.err{border-color:var(--coral);animation:shake .4s ease}
+.btn-unlock{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1a1a2e;border:none;padding:14px;border-radius:50px;font-family:'Fredoka One',cursive;font-size:1.2rem;cursor:pointer;transition:all .2s;box-shadow:0 4px 18px rgba(255,215,0,.3)}
+.btn-unlock:hover{transform:scale(1.03)}
+.pw-err{color:var(--coral);font-size:.85rem;font-weight:700;margin-top:.5rem;display:none}
+.pw-err.show{display:block}
+.pw-trial{color:var(--teal);font-size:.78rem;margin-top:1rem;cursor:pointer;text-decoration:underline}
+.pw-paystack{margin-top:1.5rem;padding:1rem;background:rgba(0,212,170,.08);border:1px solid rgba(0,212,170,.2);border-radius:var(--rs)}
+.pw-paystack-t{font-family:'Fredoka One',cursive;font-size:.95rem;color:var(--teal);margin-bottom:.4rem}
+.pw-paystack-s{font-size:.78rem;color:var(--muted);line-height:1.5}
+.btn-pay{display:inline-block;margin-top:.75rem;background:linear-gradient(135deg,var(--teal),var(--teal2));color:#041f19;border:none;padding:10px 24px;border-radius:50px;font-family:'Fredoka One',cursive;font-size:.95rem;cursor:pointer;text-decoration:none;transition:all .2s}
+.btn-pay:hover{transform:scale(1.04)}
+
 /* ── SETUP ── */
 #sset{overflow-y:auto}
 .set-inner{max-width:500px;width:100%;margin:0 auto;padding:1.75rem 1.25rem}
@@ -273,8 +293,28 @@ select option{background:#0f3460}
     <div class="gball gb4">4</div><div class="gball gb5">5</div>
     <div class="gball gb6">6</div><div class="gball gb7">7</div>
   </div>
-  <button class="btn-go" onclick="go('spl')">Let's Go! 🌟</button>
+  <button class="btn-go" onclick="go('spw')">Let's Go! 🌟</button>
   <span class="wlc-link" onclick="go('sset')">⚙️ Parent Setup</span>
+</div>
+
+<!-- PASSWORD -->
+<div id="spw" class="screen">
+  <span class="pw-icon">🔐</span>
+  <div class="pw-title">EnglishStar</div>
+  <div class="pw-sub">Enter your access code to unlock the app</div>
+  <div class="pw-box">
+    <input class="pw-inp" id="pwInp" type="text" maxlength="8" placeholder="••••••••"
+      oninput="this.value=this.value.toUpperCase()"
+      onkeydown="if(event.key==='Enter')checkPw()">
+    <button class="btn-unlock" onclick="checkPw()">🔓 Unlock</button>
+    <div class="pw-err" id="pwErr">❌ Incorrect code. Please try again.</div>
+    <div class="pw-trial" onclick="startTrial()">✨ Try a free demo first</div>
+    <div class="pw-paystack">
+      <div class="pw-paystack-t">💳 Get full access</div>
+      <div class="pw-paystack-s">Subscribe to get your personal access code and unlock all grades and exercises.</div>
+      <a class="btn-pay" href="YOUR_PAYSTACK_LINK_HERE" target="_blank">Subscribe Now →</a>
+    </div>
+  </div>
 </div>
 
 <!-- SETUP -->
@@ -1185,22 +1225,30 @@ function renderTopics(){
   </button>`;
   html+=cats.map((c,i)=>{
     const tot=c.exercises.length,done=(player.done&&player.done[c.id])||0;
-    const stars='⭐'.repeat(Math.min(done,tot))+(done<tot?'☆'.repeat(tot-done):'');
+    const locked = isLocked(c.id);
+    const stars= locked ? '🔒' : ('⭐'.repeat(Math.min(done,tot))+(done<tot?'☆'.repeat(tot-done):''));
     const isH=c.color.startsWith('#');
     const slabBg=isH?`linear-gradient(160deg,${c.color},${h2r(c.color,.6)})`:c.color;
     const bdr=isH?h2r(c.color,.3):'rgba(255,255,255,.15)';
-    return `<button class="tbtn" onclick="openCat(${i})" style="box-shadow:0 4px 18px ${isH?h2r(c.color,.18):'rgba(255,255,255,.05)'}">
-      <div class="tbtn-slab" style="background:${slabBg}">
-        <span class="tbtn-icon">${c.icon}</span><span class="tbtn-ex">${tot} ex</span>
+    const lockOverlay = locked ? 'style="opacity:0.5"' : '';
+    return `<button class="tbtn" onclick="${locked ? "showPaywall()" : `openCat(${i})`}" style="box-shadow:0 4px 18px ${isH?h2r(c.color,.18):'rgba(255,255,255,.05)'}">
+      <div class="tbtn-slab" style="background:${slabBg}" ${lockOverlay}>
+        <span class="tbtn-icon">${locked ? '🔒' : c.icon}</span><span class="tbtn-ex">${tot} ex</span>
       </div>
-      <div class="tbtn-body" style="border:1.5px solid ${bdr};border-left:none">
-        <span class="tbtn-name" style="color:${c.color}">${c.name}</span>
+      <div class="tbtn-body" style="border:1.5px solid ${bdr};border-left:none" ${lockOverlay}>
+        <span class="tbtn-name" style="color:${c.color}">${c.name} ${locked ? '<span style="font-size:.7rem;color:var(--muted)">— Subscribe to unlock</span>' : ''}</span>
         <span class="tbtn-desc">${c.desc}</span>
         <div class="tbtn-foot"><span class="tbtn-stars">${stars}</span><span class="tbtn-arr">›</span></div>
       </div>
     </button>`;
   }).join('');
   document.getElementById('hTopics').innerHTML=html;
+}
+
+// ── PAYWALL ──
+function showPaywall(){
+  toast('🔒','Subscribe to Unlock','Get your access code at the link below!');
+  setTimeout(()=>go('spw'), 1500);
 }
 
 // ── AI PICKER ──
@@ -1357,18 +1405,161 @@ let aiT;
 async function startAI(){
   if(!player||!curCat)return;
   showAIOv(true);
-  const p=`You are an English teacher creating a fun quiz for a Grade ${player.grade} South African English FAL student.\n\nTopic: ${curCat.name} (${curCat.desc})\n\nGenerate exactly 5 multiple-choice questions about "${curCat.name}" for Grade ${player.grade} FAL.\n\nRules:\n- Match CAPS curriculum for Grade ${player.grade}\n- Simple friendly language for a child\n- 4 options per question\n- One correct answer (index 0-3)\n- Short helpful hint\n- Use SA context (Thabo, Amahle, Cape Town, Joburg)\n- Fun with emojis sometimes\n\nRespond ONLY with JSON array, no markdown:\n[{"q":"question","options":["A","B","C","D"],"answer":0,"hint":"hint"}]`;
+
+  const prompt=`You are an English teacher creating a fun quiz for a Grade ${player.grade} South African English FAL student.
+
+Topic: ${curCat.name} (${curCat.desc})
+
+Generate exactly 5 multiple-choice questions about "${curCat.name}" for Grade ${player.grade} FAL.
+
+Rules:
+- Match CAPS curriculum for Grade ${player.grade}
+- Simple friendly language for a child
+- 4 options per question
+- One correct answer (answer = index 0 to 3)
+- Short helpful hint per question
+- Use SA names and places (Thabo, Amahle, Sipho, Cape Town, Joburg)
+- Add emojis to make it fun
+
+Respond ONLY with a valid JSON array. No markdown. No extra text. Example:
+[{"q":"Question text","options":["A","B","C","D"],"answer":0,"hint":"Short hint"}]`;
+
+  // Try multiple API endpoints - first try a CORS proxy, then fallback to generated questions
+  let questions = null;
+
+  // Method 1: Try via allorigins CORS proxy
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:p}]})});
-    const data=await res.json();
-    let txt=(data.content||[]).map(b=>b.text||'').join('').replace(/```json|```/g,'').trim();
-    const qs=JSON.parse(txt);
-    if(!Array.isArray(qs)||!qs.length)throw new Error('bad');
-    showAIOv(false);isAI=true;
-    curEx={title:'🤖 AI: '+curCat.name,type:'mcq',xpReward:50,questions:qs.slice(0,5)};
-    qIdx=0;hearts=3;score=0;xpG=0;selOpt=null;
-    go('sqz');setQBar();renderQ();
-  }catch(e){showAIOv(false);toast('😬','Oops!','Could not load AI questions. Check your connection.')}
+    const apiBody = JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:1500,
+      messages:[{role:'user',content:prompt}]
+    });
+    const proxyUrl = 'https://api.allorigins.win/post?url=' + encodeURIComponent('https://api.anthropic.com/v1/messages');
+    const res = await fetch(proxyUrl, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        url:'https://api.anthropic.com/v1/messages',
+        method:'POST',
+        headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01'},
+        body: apiBody
+      })
+    });
+    if(res.ok){
+      const wrapper = await res.json();
+      const data = JSON.parse(wrapper.contents);
+      let txt=(data.content||[]).map(b=>b.text||'').join('').replace(/```json|```/g,'').trim();
+      const parsed = JSON.parse(txt);
+      if(Array.isArray(parsed)&&parsed.length) questions=parsed;
+    }
+  }catch(e1){console.log('Method 1 failed:',e1)}
+
+  // Method 2: Direct fetch (works if server has CORS headers)
+  if(!questions){
+    try{
+      const res=await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+          'anthropic-version':'2023-06-01',
+          'anthropic-dangerous-direct-browser-access':'true'
+        },
+        body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1500,messages:[{role:'user',content:prompt}]})
+      });
+      if(res.ok){
+        const data=await res.json();
+        let txt=(data.content||[]).map(b=>b.text||'').join('').replace(/```json|```/g,'').trim();
+        const parsed=JSON.parse(txt);
+        if(Array.isArray(parsed)&&parsed.length) questions=parsed;
+      }
+    }catch(e2){console.log('Method 2 failed:',e2)}
+  }
+
+  // Method 3: Use smart pre-built fallback questions based on topic
+  if(!questions){
+    questions = generateFallback(curCat.name, player.grade);
+  }
+
+  showAIOv(false);
+  isAI=true;
+  curEx={title:'🤖 AI: '+curCat.name,type:'mcq',xpReward:50,questions:questions.slice(0,5)};
+  qIdx=0;hearts=3;score=0;xpG=0;selOpt=null;
+  go('sqz');setQBar();renderQ();
+}
+
+function generateFallback(topic, grade){
+  // Smart fallback questions per topic when API is unavailable
+  const fallbacks = {
+    'Nouns':[
+      {q:`Which word is a <strong>noun</strong>? 🤔`,options:['run','beautiful','dog','quickly'],answer:2,hint:'A noun is a person, place, or thing.'},
+      {q:`Which is a <strong>proper noun</strong>?`,options:['city','dog','Thabo','river'],answer:2,hint:'Proper nouns are specific names and start with a capital letter.'},
+      {q:`Which is an <strong>abstract noun</strong>?`,options:['table','love','dog','pencil'],answer:1,hint:'Abstract nouns are things you cannot touch — like feelings.'},
+      {q:`What is the plural of <strong>child</strong>?`,options:['childs','childes','children','childer'],answer:2,hint:'This is an irregular plural.'},
+      {q:`Which is a <strong>collective noun</strong>?`,options:['dog','run','flock','blue'],answer:2,hint:'A collective noun names a group — like a flock of birds.'}
+    ],
+    'Pronouns':[
+      {q:`Replace <strong>Amahle</strong> with a pronoun: "___ is my friend."`,options:['He','She','They','It'],answer:1,hint:'Amahle is a girl\'s name — use She.'},
+      {q:`Which is a <strong>possessive pronoun</strong>?`,options:['he','mine','they','who'],answer:1,hint:'Possessive pronouns show ownership — mine, yours, his, hers.'},
+      {q:`"___ book is this?" — which pronoun fits?`,options:['Who','Whom','Whose','Which'],answer:2,hint:'Whose shows possession.'},
+      {q:`"She hurt ___." (reflexive pronoun)`,options:['her','herself','hers','she'],answer:1,hint:'Reflexive pronouns end in -self or -selves.'},
+      {q:`Which word is a <strong>personal pronoun</strong>?`,options:['run','they','big','and'],answer:1,hint:'Personal pronouns replace names — I, you, he, she, we, they.'}
+    ],
+    'Verbs':[
+      {q:`Which word is a <strong>verb</strong>? ⚡`,options:['happy','dog','runs','blue'],answer:2,hint:'A verb shows an action or state of being.'},
+      {q:`Past tense of <strong>go</strong>:`,options:['goed','gone','went','goes'],answer:2,hint:'Irregular verb — go → went.'},
+      {q:`"She ___ reading when I called." (past progressive)`,options:['is','was','were','has'],answer:1,hint:'Past progressive = was/were + verb-ing.'},
+      {q:`Which sentence is in the <strong>future tense</strong>?`,options:['She ran fast.','She runs fast.','She will run fast.','She was running.'],answer:2,hint:'Future tense uses will + verb.'},
+      {q:`"The letter was written by Sipho." This is <strong>passive/active</strong>?`,options:['Active voice','Passive voice'],answer:1,hint:'Passive voice — the subject receives the action.'}
+    ],
+    'Adjectives':[
+      {q:`Which word is an <strong>adjective</strong>? 🎨`,options:['run','beautiful','dog','quickly'],answer:1,hint:'Adjectives describe nouns.'},
+      {q:`Comparative form of <strong>big</strong>:`,options:['more big','biggest','bigger','most big'],answer:2,hint:'Short adjectives add -er for comparative.'},
+      {q:`Superlative form of <strong>happy</strong>:`,options:['happier','more happy','happiest','most happier'],answer:2,hint:'Change y to i, add -est.'},
+      {q:`"___ dogs are noisy." (nearby, plural)`,options:['That','This','Those','These'],answer:3,hint:'These = plural and nearby.'},
+      {q:`"She is very <strong>clever</strong>." — clever is:`,options:['A noun','A verb','An adjective','An adverb'],answer:2,hint:'Clever describes the noun She.'}
+    ],
+    'Adverbs':[
+      {q:`Which word is an <strong>adverb</strong>? 💨`,options:['dog','beautiful','quickly','run'],answer:2,hint:'Adverbs describe verbs, adjectives, or other adverbs.'},
+      {q:`"She sings <strong>beautifully</strong>." — beautifully tells us:`,options:['When','Where','How','How often'],answer:2,hint:'Adverbs of manner answer How?'},
+      {q:`"He arrived <strong>yesterday</strong>." — yesterday tells us:`,options:['How','Where','When','How often'],answer:2,hint:'Adverbs of time answer When?'},
+      {q:`"She <strong>often</strong> visits her grandmother." — often tells us:`,options:['When','How often','Where','How'],answer:1,hint:'Often = adverb of frequency.'},
+      {q:`"It is <strong>very</strong> cold." — very is an adverb of:`,options:['Time','Place','Degree','Manner'],answer:2,hint:'Very intensifies the adjective cold.'}
+    ],
+    'Conjunctions':[
+      {q:`"She was tired ___ she kept working." — which conjunction?`,options:['and','because','but','or'],answer:2,hint:'But shows contrast.'},
+      {q:`"He stayed home ___ he was sick."`,options:['but','or','because','and'],answer:2,hint:'Because shows reason.'},
+      {q:`Which is a <strong>coordinating conjunction</strong>?`,options:['because','although','but','unless'],answer:2,hint:'FANBOYS: For, And, Nor, But, Or, Yet, So.'},
+      {q:`"___ it rained, we played outside."`,options:['Because','Although','And','So'],answer:1,hint:'Although shows contrast at the start.'},
+      {q:`"She studied hard ___ passed the test."`,options:['but','or','and','although'],answer:2,hint:'And joins two positive actions.'}
+    ],
+    'Prepositions':[
+      {q:`"The cat sat ___ the mat."`,options:['in','on','at','from'],answer:1,hint:'On shows resting on a surface.'},
+      {q:`"She was born ___ 15 June."`,options:['at','in','on','from'],answer:2,hint:'On is used with specific dates.'},
+      {q:`"He arrived ___ the morning."`,options:['on','at','in','from'],answer:2,hint:'In is used with parts of the day.'},
+      {q:`"Meet me ___ 3 o\'clock."`,options:['on','in','at','from'],answer:2,hint:'At is used with specific times.'},
+      {q:`"They hid ___ the wall."`,options:['in','at','behind','from'],answer:2,hint:'Behind = at the back of.'}
+    ],
+    'Tenses':[
+      {q:`"She <strong>walks</strong> to school every day." This is:`,options:['Past tense','Present tense','Future tense'],answer:1,hint:'Simple present describes habits.'},
+      {q:`"He <strong>played</strong> football yesterday." This is:`,options:['Past tense','Present tense','Future tense'],answer:0,hint:'Played is past tense.'},
+      {q:`"We <strong>will visit</strong> Cape Town tomorrow." This is:`,options:['Past tense','Present tense','Future tense'],answer:2,hint:'Will + verb = future tense.'},
+      {q:`"She <strong>has eaten</strong> lunch." This is:`,options:['Simple past','Present perfect','Future','Past progressive'],answer:1,hint:'Has/have + past participle = present perfect.'},
+      {q:`"They <strong>were playing</strong> when it rained." This is:`,options:['Simple past','Present tense','Past progressive','Future'],answer:2,hint:'Was/were + verb-ing = past progressive.'}
+    ]
+  };
+
+  // Find matching fallback or use generic
+  const key = Object.keys(fallbacks).find(k => topic.toLowerCase().includes(k.toLowerCase()));
+  if(key) return fallbacks[key];
+
+  // Generic fallback
+  return [
+    {q:`Which word is a <strong>noun</strong>?`,options:['run','dog','quickly','happy'],answer:1,hint:'A noun names a person, place or thing.'},
+    {q:`Which word is a <strong>verb</strong>?`,options:['big','fast','runs','blue'],answer:2,hint:'A verb shows an action.'},
+    {q:`Which word is an <strong>adjective</strong>?`,options:['run','they','beautiful','and'],answer:2,hint:'Adjectives describe nouns.'},
+    {q:`Which word is an <strong>adverb</strong>?`,options:['dog','quickly','blue','run'],answer:1,hint:'Adverbs describe verbs.'},
+    {q:`Which word is a <strong>conjunction</strong>?`,options:['dog','run','blue','and'],answer:3,hint:'Conjunctions join words or sentences.'}
+  ];
 }
 function showAIOv(show){
   document.getElementById('aiOv').style.display=show?'flex':'none';
@@ -1385,9 +1576,99 @@ function confetti(){
 let toastT;
 function toast(ic,t,s){const ex=document.querySelector('.toast');if(ex)ex.remove();clearTimeout(toastT);const el=document.createElement('div');el.className='toast';el.innerHTML=`<span class="toast-ic">${ic}</span><div><div class="toast-t">${t}</div><div class="toast-s">${s}</div></div>`;document.body.appendChild(el);toastT=setTimeout(()=>el.remove(),3500)}
 
+// ── PASSWORD ──
+// Add your monthly codes here - change every month
+// Format: 'CODE': expiry date as YYYY-MM-DD
+const VALID_CODES = {
+  'STAR2025': '2025-12-31',
+  'ENGJAN26': '2026-01-31',
+  'ENGFEB26': '2026-02-28',
+  'ENGMAR26': '2026-03-31',
+  'ENGAPR26': '2026-04-30',
+  'ENGMAY26': '2026-05-31',
+  'ENGJUN26': '2026-06-30',
+  'ENGJUL26': '2026-07-31',
+  'ENGAUG26': '2026-08-31',
+  'ENGSEP26': '2026-09-30',
+  'ENGOKT26': '2026-10-31',
+  'ENGNOV26': '2026-11-30',
+  'ENGDES26': '2026-12-31',
+  'DEMO2025': '2099-12-31'  // permanent demo code for testing
+};
+
+const TRIAL_CATS = ['nouns4','pronouns4']; // which categories are free in trial
+
+function checkPw(){
+  const inp = document.getElementById('pwInp');
+  const err = document.getElementById('pwErr');
+  const code = inp.value.trim().toUpperCase();
+  
+  if(VALID_CODES[code]){
+    const expiry = new Date(VALID_CODES[code]);
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    if(today <= expiry){
+      // Valid code - save to localStorage
+      localStorage.setItem('es_code', code);
+      localStorage.setItem('es_trial', 'false');
+      inp.classList.remove('err');
+      err.classList.remove('show');
+      toast('🎉', 'Access Granted!', 'Welcome to EnglishStar!');
+      load();
+      if(profiles.length > 0) go('spl');
+      else go('sset');
+    } else {
+      // Expired code
+      inp.classList.add('err');
+      err.textContent = '❌ This code has expired. Please renew your subscription.';
+      err.classList.add('show');
+      setTimeout(()=>inp.classList.remove('err'), 500);
+    }
+  } else {
+    inp.classList.add('err');
+    err.textContent = '❌ Incorrect code. Please try again.';
+    err.classList.add('show');
+    setTimeout(()=>inp.classList.remove('err'), 500);
+  }
+}
+
+function startTrial(){
+  localStorage.setItem('es_trial', 'true');
+  localStorage.removeItem('es_code');
+  toast('✨', 'Demo Mode', 'Trying 2 free topics in Grade 4!');
+  load();
+  if(profiles.length > 0) go('spl');
+  else go('sset');
+}
+
+function isLocked(catId){
+  const trial = localStorage.getItem('es_trial') === 'true';
+  if(!trial) return false; // full access
+  return !TRIAL_CATS.includes(catId); // trial: only unlock certain cats
+}
+
 // ── INIT ──
 load();
-if(profiles.length>0)go('spl');
+// Check if already unlocked
+const savedCode = localStorage.getItem('es_code');
+const isTrial = localStorage.getItem('es_trial') === 'true';
+if(savedCode && VALID_CODES[savedCode]){
+  const expiry = new Date(VALID_CODES[savedCode]);
+  const today = new Date(); today.setHours(0,0,0,0);
+  if(today <= expiry){
+    if(profiles.length > 0) go('spl');
+    // else show welcome screen as is
+  } else {
+    // Code expired - show password screen
+    localStorage.removeItem('es_code');
+    go('spw');
+  }
+} else if(isTrial){
+  // Allow trial users through
+  if(profiles.length > 0) go('spl');
+} else {
+  // No code - show welcome, clicking Let's Go will go to password
+}
 </script>
 </body>
 </html>
