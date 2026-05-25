@@ -62,7 +62,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .pw-title{font-family:'Fredoka One',cursive;font-size:2rem;color:var(--gold)}
 .pw-sub{color:var(--muted);font-size:.9rem;max-width:300px;line-height:1.5}
 .pw-box{background:var(--card);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);padding:1.75rem;margin-top:.5rem;width:100%;max-width:360px}
-.pw-inp{width:100%;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.15);border-radius:var(--rs);padding:14px;color:var(--white);font-family:'Fredoka One',cursive;font-size:1.4rem;text-align:center;letter-spacing:.3em;outline:none;transition:border-color .2s;margin-bottom:1rem}
+.pw-inp{width:100%;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.15);border-radius:var(--rs);padding:14px;color:var(--white);font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;text-align:center;letter-spacing:.15em;outline:none;transition:border-color .2s;margin-bottom:1rem}
 .pw-inp:focus{border-color:var(--gold)}
 .pw-inp.err{border-color:var(--coral);animation:shake .4s ease}
 .btn-unlock{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1a1a2e;border:none;padding:14px;border-radius:50px;font-family:'Fredoka One',cursive;font-size:1.2rem;cursor:pointer;transition:all .2s;box-shadow:0 4px 18px rgba(255,215,0,.3)}
@@ -294,7 +294,6 @@ select option{background:#0f3460}
     <div class="gball gb6">6</div><div class="gball gb7">7</div>
   </div>
   <button class="btn-go" onclick="go('spw')">Let's Go! 🌟</button>
-  <span class="wlc-link" onclick="go('sset')">⚙️ Parent Setup</span>
 </div>
 
 <!-- PASSWORD -->
@@ -303,17 +302,17 @@ select option{background:#0f3460}
   <div class="pw-title">EnglishStar</div>
   <div class="pw-sub">Enter your access code to unlock the app</div>
   <div class="pw-box">
-    <input class="pw-inp" id="pwInp" type="text" maxlength="8" placeholder="••••••••"
-      oninput="this.value=this.value.toUpperCase()"
+    <input class="pw-inp" id="pwInp" type="text" maxlength="12" placeholder="Enter code"
       onkeydown="if(event.key==='Enter')checkPw()">
     <button class="btn-unlock" onclick="checkPw()">🔓 Unlock</button>
     <div class="pw-err" id="pwErr">❌ Incorrect code. Please try again.</div>
     <div class="pw-trial" onclick="startTrial()">✨ Try a free demo first</div>
     <div class="pw-paystack">
       <div class="pw-paystack-t">💳 Get full access</div>
-      <div class="pw-paystack-s">Subscribe to get your personal access code and unlock all grades and exercises.</div>
-      <a class="btn-pay" href="YOUR_PAYSTACK_LINK_HERE" target="_blank">Subscribe Now →</a>
+      <div class="pw-paystack-s">Subscribe to get your personal monthly access code and unlock all grades and exercises.</div>
+      <a class="btn-pay" href="https://paystack.shop/pay/0q5hh5kx1h" target="_blank">Subscribe Now →</a>
     </div>
+    <div style="margin-top:1rem;font-size:.75rem;color:var(--muted)">Already a subscriber? Enter your code above ↑</div>
   </div>
 </div>
 
@@ -381,7 +380,8 @@ select option{background:#0f3460}
   <div class="ps-title">Who's playing?</div>
   <div class="ps-sub">Tap your name to start your adventure</div>
   <div class="ps-cards" id="psCards"></div>
-  <span class="ps-link" onclick="go('sset')">⚙️ Parent setup</span>
+  <span class="ps-link" onclick="go('sset')">⚙️ Parent setup / Add child</span>
+  <span class="ps-link" style="margin-top:.5rem;color:var(--coral)" onclick="doLogout()">🔒 Log out</span>
 </div>
 
 <!-- HOME -->
@@ -1245,6 +1245,15 @@ function renderTopics(){
   document.getElementById('hTopics').innerHTML=html;
 }
 
+// ── LOGOUT ──
+function doLogout(){
+  if(confirm('Log out? You will need your access code to log in again.')){
+    localStorage.removeItem('es_code');
+    localStorage.removeItem('es_trial');
+    go('sw');
+  }
+}
+
 // ── PAYWALL ──
 function showPaywall(){
   toast('🔒','Subscribe to Unlock','Get your access code at the link below!');
@@ -1577,31 +1586,41 @@ let toastT;
 function toast(ic,t,s){const ex=document.querySelector('.toast');if(ex)ex.remove();clearTimeout(toastT);const el=document.createElement('div');el.className='toast';el.innerHTML=`<span class="toast-ic">${ic}</span><div><div class="toast-t">${t}</div><div class="toast-s">${s}</div></div>`;document.body.appendChild(el);toastT=setTimeout(()=>el.remove(),3500)}
 
 // ── PASSWORD ──
-// Add your monthly codes here - change every month
-// Format: 'CODE': expiry date as YYYY-MM-DD
+// ═══════════════════════════════════════════════════
+// YOUR MONTHLY CODES — send ONE code per paying subscriber
+// each month. Codes expire automatically.
+// ═══════════════════════════════════════════════════
 const VALID_CODES = {
-  'STAR2025': '2025-12-31',
-  'ENGJAN26': '2026-01-31',
-  'ENGFEB26': '2026-02-28',
-  'ENGMAR26': '2026-03-31',
-  'ENGAPR26': '2026-04-30',
-  'ENGMAY26': '2026-05-31',
-  'ENGJUN26': '2026-06-30',
-  'ENGJUL26': '2026-07-31',
-  'ENGAUG26': '2026-08-31',
-  'ENGSEP26': '2026-09-30',
-  'ENGOKT26': '2026-10-31',
-  'ENGNOV26': '2026-11-30',
-  'ENGDES26': '2026-12-31',
-  'DEMO2025': '2099-12-31'  // permanent demo code for testing
+  // ADMIN — never share
+  'ES#9mK2@xL7q': '2099-12-31',
+  // DEMO — for testing only
+  'DEMO#4rT9wX':  '2099-12-31',
+
+  // 2025
+  'X7k#mP2nQ9wL': '2025-12-31',
+
+  // 2026 — send ONE of these to each paying subscriber per month
+  'Lq8#Wr5kN2mX': '2026-01-31',
+  'Pm3#Xt9kR7nW': '2026-02-28',
+  'Wn6#Kp4mT2rX': '2026-03-31',
+  'Rk9#Nm7wP5xL': '2026-04-30',
+  'Xt2#Lq8kW3nM': '2026-05-31',
+  'Mw5#Pr6nK9xT': '2026-06-30',
+  'Nq7#Xk3mL8wR': '2026-07-31',
+  'Kp4#Wm9rX6nL': '2026-08-31',
+  'Tr8#Nq2xM5kW': '2026-09-30',
+  'Wx3#Lk7pN4rQ': '2026-10-31',
+  'Qm6#Tn2wK8xP': '2026-11-30',
+  'Lk9#Rx5mW3nQ': '2026-12-31',
 };
+// ═══════════════════════════════════════════════════
 
 const TRIAL_CATS = ['nouns4','pronouns4']; // which categories are free in trial
 
 function checkPw(){
   const inp = document.getElementById('pwInp');
   const err = document.getElementById('pwErr');
-  const code = inp.value.trim().toUpperCase();
+  const code = inp.value.trim(); // case-sensitive now
   
   if(VALID_CODES[code]){
     const expiry = new Date(VALID_CODES[code]);
