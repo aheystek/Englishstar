@@ -125,6 +125,12 @@ body{display:flex;flex-direction:column;max-width:480px;margin:0 auto;box-shadow
 .wvd-d{font-size:12px;opacity:.9}
 .wvd-e{font-size:11px;opacity:.7;margin-top:3px;font-style:italic}
 .stit{font-family:'Baloo 2',sans-serif;font-size:14px;font-weight:800;margin:12px 0 8px}
+.search-item{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--bor)}
+.search-item:hover{background:var(--bl-l)}
+.search-item:last-child{border-bottom:none}
+.search-ic{font-size:1.3rem;width:28px;flex-shrink:0}
+.search-nm{font-weight:800;font-size:12px;color:var(--bl)}
+.search-desc{font-size:10px;color:var(--mut);line-height:1.3}
 #modal{position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:100;display:none;align-items:flex-end}
 #modal.on{display:flex}
 #mbox{background:#fff;border-radius:18px 18px 0 0;padding:20px 16px;width:100%;animation:su .25s}
@@ -179,6 +185,10 @@ body{display:flex;flex-direction:column;max-width:480px;margin:0 auto;box-shadow
 
 <div id="scroll">
 <div class="scr on" id="s-home">
+  <div style="position:relative;margin-bottom:12px">
+    <input id="search-inp" type="text" placeholder="🔍  Search sections..." oninput="doSearch(this.value)" style="width:100%;padding:10px 14px 10px 14px;border:2px solid var(--bor);border-radius:12px;font-size:13px;font-family:'Nunito',sans-serif;font-weight:700;outline:none;background:#fff;color:var(--txt)">
+    <div id="search-results" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:2px solid var(--bor);border-top:none;border-radius:0 0 12px 12px;z-index:50;max-height:240px;overflow-y:auto;box-shadow:0 8px 20px rgba(0,0,0,.1)"></div>
+  </div>
   <div class="wvd">
     <div class="wvd-l">⭐ Word of the Day</div>
     <div class="wvd-w" id="wvd-w">diligent</div>
@@ -430,6 +440,23 @@ const AFDELINGS=[
           {s:'He stays home <u>because</u> he is sick.',u:'BECAUSE = subordinating (reason)'},
           {s:'I practise <u>so that</u> I can win.',u:'SO THAT = subordinating (purpose)'}],
    prog:'conjunctions'},
+  {id:'tenses',nm:'Tenses',ic:'⏰',kl:'#7c3aed',kat:'parts',
+   verd:'<strong>Tenses</strong> tell us WHEN something happens — in the past, present or future.',
+   reels:['Simple Present: She sings. They play. (habit or fact)',
+          'Present Continuous: She is singing. (happening right now)',
+          'Present Perfect: She has sung. (past action, present relevance)',
+          'Simple Past: She sang. He played. (completed action)',
+          'Past Continuous: She was singing. (ongoing past action)',
+          'Past Perfect: She had sung. (before another past action)',
+          'Simple Future: She will sing. (future action)',
+          'Future Continuous: She will be singing. (ongoing future action)',
+          'Irregular verbs change form: go/went/gone, eat/ate/eaten, run/ran/run'],
+   voorb:[{s:'She <u>sings</u> every day.',u:'SIMPLE PRESENT — habit/routine'},
+          {s:'She <u>is singing</u> right now.',u:'PRESENT CONTINUOUS — happening now'},
+          {s:'She <u>has sung</u> before.',u:'PRESENT PERFECT — past experience'},
+          {s:'She <u>sang</u> yesterday.',u:'SIMPLE PAST — completed action'},
+          {s:'She <u>will sing</u> tomorrow.',u:'SIMPLE FUTURE — future action'}],
+   prog:'tenses'},
   {id:'articles',nm:'Articles & Determiners',ic:'🏷️',kl:'#22c55e',kat:'parts',
    verd:'<strong>Articles</strong> are used before nouns — they tell us if something is specific or general.',
    reels:['Definite article: THE — we know exactly which one: THE dog',
@@ -978,6 +1005,45 @@ function genVrae(afdelId){
       break;
     }
 
+    case 'tenses':{
+      const tenseData=[
+        {s:'She sings every day.',t:'Simple Present',h:'Habit or routine — Simple Present.'},
+        {s:'She is singing right now.',t:'Present Continuous',h:'Happening NOW — Present Continuous (is/are + verb+ing).'},
+        {s:'She has sung before.',t:'Present Perfect',h:'Past action with present relevance — Present Perfect (has/have + past participle).'},
+        {s:'She sang yesterday.',t:'Simple Past',h:'Completed past action — Simple Past.'},
+        {s:'She was singing when I called.',t:'Past Continuous',h:'Ongoing past action — Past Continuous (was/were + verb+ing).'},
+        {s:'She had sung before he arrived.',t:'Past Perfect',h:'Action before another past action — Past Perfect (had + past participle).'},
+        {s:'She will sing tomorrow.',t:'Simple Future',h:'Future action — Simple Future (will + verb).'},
+        {s:'They play rugby on Saturdays.',t:'Simple Present',h:'Regular habit — Simple Present.'},
+        {s:'He is eating lunch.',t:'Present Continuous',h:'Happening right now — Present Continuous.'},
+        {s:'I have visited Cape Town.',t:'Present Perfect',h:'Life experience — Present Perfect.'},
+        {s:'We watched the match.',t:'Simple Past',h:'Completed past action — Simple Past.'},
+        {s:'They were playing when it rained.',t:'Past Continuous',h:'Ongoing when interrupted — Past Continuous.'},
+        {s:'She will be studying tonight.',t:'Future Continuous',h:'Ongoing future action — Future Continuous (will be + verb+ing).'},
+      ];
+      shuf(tenseData).slice(0,8).forEach(({s,t,h})=>{
+        const all=['Simple Present','Present Continuous','Present Perfect','Simple Past','Past Continuous','Past Perfect','Simple Future','Future Continuous'];
+        vrae.push(maakV(`What tense is: "${s}"?`,t,kies(all.filter(x=>x!==t),3),h));
+      });
+      // Form the tense
+      shuf(IRVERBS).slice(0,6).forEach(({p,pt,pp})=>{
+        vrae.push(maakV(`Simple past of "${p}"?`,pt,kies(IRVERBS.filter(x=>x.p!==p),2).map(x=>x.pt).concat([p+'ed']),`${p} → ${pt} → ${pp} (irregular)`));
+        vrae.push(maakV(`Past participle of "${p}"? (used with has/have/had)`,pp,kies(IRVERBS.filter(x=>x.p!==p),2).map(x=>x.pp).concat([pt]),`${p} → ${pt} → ${pp}`));
+      });
+      // Identify tense signal words
+      [{w:'yesterday',t:'Past'},{w:'right now',t:'Present Continuous'},{w:'every day',t:'Simple Present'},
+       {w:'tomorrow',t:'Future'},{w:'already',t:'Present Perfect'},{w:'when I arrived',t:'Past Perfect'},
+      ].forEach(({w,t})=>{
+        vrae.push(maakV(`"${w}" is a signal word for which tense?`,t,['Past','Present','Future','Present Perfect'].filter(x=>x!==t),`"${w}" signals the ${t} tense.`));
+      });
+      // Present perfect vs simple past
+      vrae.push(maakV('Which is correct: "I have seen that film ___"?','before',['yesterday','last week','in 2020'],'Present perfect uses time expressions like: before, already, yet, ever — not specific past times.'));
+      vrae.push(maakV('Which is correct: "I ___ that film yesterday."','saw',['have seen','have saw','seen'],'Simple past with specific time (yesterday): I SAW.'));
+      vrae.push(maakV('Present Continuous is formed with ___?','is/are + verb + -ing',['has/have + past participle','will + verb','did + verb'],'Present Continuous: She IS SINGING right now.'));
+      vrae.push(maakV('Present Perfect is formed with ___?','has/have + past participle',['is/are + verb + -ing','will + verb','did + verb'],'Present Perfect: She HAS SUNG before.'));
+      break;
+    }
+
     case 'articles':{
       const aData=[
         {s:'___ dog barked.',a:'The',h:'"The" = definite (specific dog).'},
@@ -1396,6 +1462,41 @@ function wisselProf(i){PROFS[huidigProf]=ST;huidigProf=i;ST=PROFS[i];stoor();upd
 function kiesAv(a){ST.av=a;stoor();updProfiel();document.querySelectorAll('#mbox-inner .avo').forEach(e=>e.classList.toggle('on',e.textContent===a));document.getElementById('av-btn').textContent=a;}
 function voegKindBy(){const nm=(document.getElementById('nk-naam').value||'').trim();if(!nm){alert('Please enter a name.');return;}PROFS.push(nuutProfiel(nm,'🦁'));huidigProf=PROFS.length-1;ST=PROFS[huidigProf];stoor();updProfiel();sluitModal();toast('Welcome '+nm+'! 🎉');}
 function doUitlog(){if(!confirm('Log out?'))return;localStorage.removeItem('es_kode');localStorage.removeItem('es_demo');sluitModal();document.getElementById('pw-screen').style.display='flex';}
+
+function doSearch(q){
+  const box=document.getElementById('search-results');
+  if(!q||q.length<2){box.style.display='none';return;}
+  const lq=q.toLowerCase();
+  const matches=AFDELINGS.filter(a=>
+    a.nm.toLowerCase().includes(lq)||
+    a.verd.toLowerCase().includes(lq)||
+    (a.reels&&a.reels.some(r=>r.toLowerCase().includes(lq)))
+  ).slice(0,8);
+  if(!matches.length){
+    box.innerHTML='<div style="padding:12px 14px;font-size:12px;color:var(--mut)">No results found.</div>';
+    box.style.display='block';return;
+  }
+  box.innerHTML=matches.map(a=>`
+    <div class="search-item" onclick="searchGo('${a.id}','${a.kat}')">
+      <div class="search-ic">${a.ic}</div>
+      <div><div class="search-nm">${a.nm}</div>
+      <div class="search-desc">${a.verd.replace(/<[^>]+>/g,'').substring(0,60)}...</div></div>
+    </div>`).join('');
+  box.style.display='block';
+}
+function searchGo(id,kat){
+  document.getElementById('search-inp').value='';
+  document.getElementById('search-results').style.display='none';
+  huidigKat=kat;
+  gaAfd(id);
+}
+// Close search on outside click
+document.addEventListener('click',e=>{
+  if(!e.target.closest('#search-inp')&&!e.target.closest('#search-results')){
+    const box=document.getElementById('search-results');
+    if(box)box.style.display='none';
+  }
+});
 
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2500);}
 
