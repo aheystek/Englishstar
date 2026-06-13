@@ -338,7 +338,7 @@ function gaNav_intern(id){
 // SECTIONS DATA — Based on CAPS textbook
 // ============================================================
 const KATTE=[
-  {id:'parts',nm:'Parts of Speech',ic:'📚',kl:'#1565FF',desc:'Nouns, pronouns, adjectives, verbs, adverbs, prepositions, conjunctions'},
+  {id:'parts',nm:'Parts of Speech',ic:'📚',kl:'#1565FF',desc:'Nouns, pronouns, adjectives, verbs, adverbs, prepositions, conjunctions, interjections'},
   {id:'sentences',nm:'Sentences',ic:'📝',kl:'#7c3aed',desc:'Simple, compound, complex sentences, active/passive, direct/indirect speech'},
   {id:'spelling',nm:'Spelling & Language',ic:'✏️',kl:'#0d9488',desc:'Phonetics, syllables, punctuation, spelling rules, word formation'},
 ];
@@ -440,6 +440,37 @@ const AFDELINGS=[
           {s:'He stays home <u>because</u> he is sick.',u:'BECAUSE = subordinating (reason)'},
           {s:'I practise <u>so that</u> I can win.',u:'SO THAT = subordinating (purpose)'}],
    prog:'conjunctions'},
+  {id:'interjections',nm:'Interjections',ic:'😮',kl:'#f97316',kat:'parts',
+   verd:'An <strong>interjection</strong> is a word or phrase that expresses a sudden feeling or emotion. It is usually followed by an exclamation mark.',
+   reels:['Interjections express sudden emotions or feelings',
+          'They are NOT grammatically connected to the rest of the sentence',
+          'Happy: Hooray! Yay! Fantastic! Wonderful! Yes!',
+          'Surprise: Wow! Oh! Goodness! Gosh!',
+          'Pain: Ouch! Eina! Ow!',
+          'Disgust or disapproval: Yuck! Ugh! Boo! Tsk!',
+          'Greeting: Hello! Hey! Hi!',
+          'Warning: Watch out! Careful! Stop!',
+          'Relief: Phew! Thank goodness!',
+          'Tip: An interjection stands ALONE and shows FEELING.'],
+   voorb:[{s:'"<u>Wow!</u>" she said when she saw the prize.',u:'WOW = interjection of surprise'},
+          {s:'"<u>Ouch!</u>" he cried when he fell.',u:'OUCH = interjection of pain'},
+          {s:'"<u>Hooray!</u> We won the game!"',u:'HOORAY = interjection of joy'},
+          {s:'"<u>Yuck!</u> This food tastes terrible."',u:'YUCK = interjection of disgust'}],
+   prog:'interjections'},
+  {id:'numerical_adj',nm:'Numerical Adjectives',ic:'🔢',kl:'#0891b2',kat:'parts',
+   verd:'<strong>Numerical adjectives</strong> tell us about the NUMBER, ORDER or AMOUNT of nouns.',
+   reels:['Cardinal numbers (HOW MANY?): one, two, three, four, five, ten, hundred',
+          'Ordinal numbers (WHICH POSITION?): first, second, third, fourth, fifth, last',
+          'Multiplicative (HOW MANY TIMES?): single, double, triple, twice, once, thrice',
+          'Definite numerical adjective: gives an exact number — There are FIVE peaches.',
+          'Indefinite numerical adjective: gives a general amount — Some, few, many, several, all',
+          'Distributive numerical adjective: refers to individuals — each, every, either, neither, another',
+          'Tip: Ordinal numbers often end in -st, -nd, -rd, -th (1st, 2nd, 3rd, 4th)'],
+   voorb:[{s:'There are <u>three</u> dogs in the yard.',u:'THREE = cardinal (exact count)'},
+          {s:'She came <u>first</u> in the race.',u:'FIRST = ordinal (position/order)'},
+          {s:'He checked the answer <u>twice</u>.',u:'TWICE = multiplicative (how many times)'},
+          {s:'<u>Every</u> student must bring a pen.',u:'EVERY = distributive numerical adjective'}],
+   prog:'numerical_adj'},
   {id:'tenses',nm:'Tenses',ic:'⏰',kl:'#7c3aed',kat:'parts',
    verd:'<strong>Tenses</strong> tell us WHEN something happens — in the past, present or future.',
    reels:['Simple Present: She sings. They play. (habit or fact)',
@@ -789,50 +820,53 @@ function genVrae(afdelId){
 
     case 'nouns':{
       // Identify proper nouns
-      shuf(NOUNS_PROPER).slice(0,6).forEach(n=>{
-        const ans='Proper noun';const ander=['Common noun','Abstract noun','Collective noun'];
-        vrae.push(maakV(`What type of noun is "${n}"?`,ans,ander,`${n} is a specific name — PROPER noun (always capital letter).`));
+      shuf(NOUNS_PROPER).slice(0,5).forEach(n=>{
+        vrae.push(maakV(`What type of noun is "${n}"?`,'Proper noun',['Common noun','Abstract noun','Collective noun'],`${n} is a specific name — PROPER noun (always capital letter).`));
       });
       // Identify common nouns
-      shuf(NOUNS_COMMON).slice(0,6).forEach(n=>{
+      shuf(NOUNS_COMMON).slice(0,4).forEach(n=>{
         vrae.push(maakV(`What type of noun is "${n}"?`,'Common noun',['Proper noun','Abstract noun','Collective noun'],`${n} is a general name — COMMON noun.`));
       });
       // Abstract nouns
-      shuf(NOUNS_ABSTRACT).slice(0,5).forEach(n=>{
+      shuf(NOUNS_ABSTRACT).slice(0,4).forEach(n=>{
         vrae.push(maakV(`What type of noun is "${n}"?`,'Abstract noun',['Common noun','Proper noun','Collective noun'],`${n} cannot be touched or seen — ABSTRACT noun.`));
       });
       // Cannot be counted
-      shuf(NOUNS_MASS).slice(0,4).forEach(n=>{
+      shuf(NOUNS_MASS).slice(0,3).forEach(n=>{
         vrae.push(maakV(`"${n}" cannot be counted. What type of noun is it?`,'Uncountable noun',['Countable noun','Proper noun','Abstract noun'],`${n} cannot be counted — uncountable noun.`));
       });
       // Collective nouns
-      shuf(NOUNS_COLL).slice(0,5).forEach(({w,v})=>{
+      shuf(NOUNS_COLL).slice(0,4).forEach(({w,v})=>{
         const ander=NOUNS_COLL.filter(x=>x.w!==w).map(x=>x.w);
         vrae.push(maakV(`What is the collective noun for a group of "${v}"?`,w,kies(ander,3),`A ${w} of ${v}.`));
       });
-      // Capital letter
-      shuf(NOUNS_PROPER).slice(0,4).forEach(n=>{
-        vrae.push(maakV(`Does "${n.toLowerCase()}" need a capital letter?`,'Yes — it is a proper noun',['No — it is a common noun','Only at the start of a sentence','Sometimes'],`${n} is a proper noun — ALWAYS capital letter!`));
+      // Noun in sentence — FILL IN THE BLANK style
+      [{s:'The ___ runs fast.',n:'dog',opts:['runs','fast','The']},
+       {s:'___ lives in Johannesburg.',n:'Thabo',opts:['lives','in','Johannesburg']},
+       {s:'She showed great ___.',n:'courage',opts:['showed','great','She']},
+       {s:'A flock of ___ flew past.',n:'birds',opts:['flock','flew','past']},
+      ].forEach(({s,n,opts})=>{
+        vrae.push(maakV(`Which word is the NOUN in: "${s.replace('___', n)}"?`,n,opts,`"${n}" is the naming word — it is the noun.`));
       });
-      // Noun in sentence
-      [{s:'The dog runs fast.',n:'dog'},{s:'Thabo lives in Johannesburg.',n:'Thabo'},
-       {s:'She showed great courage.',n:'courage'},{s:'A flock of birds flew past.',n:'flock'},
-      ].forEach(({s,n})=>{
-        const words=s.replace(/[.,]/g,'').split(' ').filter(w=>w!==n);
-        vrae.push(maakV(`Identify the noun in: "${s}"`,n,kies(words,3),`"${n}" is the naming word in this sentence.`));
+      // CORRECT THE SENTENCE — capital letter errors
+      [{w:'thabo',c:'Thabo'},{w:'johannesburg',c:'Johannesburg'},{w:'south africa',c:'South Africa'}].forEach(({w,c})=>{
+        vrae.push(maakV(`"${w}" is a proper noun. Which spelling is correct?`,c,[w,w.toUpperCase(),w.charAt(0)+w.slice(1)],`Proper nouns ALWAYS start with a capital letter: ${c}`));
       });
       // Plural forms
-      [{s:'child',p:'children'},{s:'mouse',p:'mice'},{s:'tooth',p:'teeth'},{s:'foot',p:'feet'},
-       {s:'woman',p:'women'},{s:'goose',p:'geese'},{s:'ox',p:'oxen'},
-      ].forEach(({s,p})=>{
-        const wrong=[s+'s',s+'es','same as singular'];
-        vrae.push(maakV(`What is the plural of "${s}"?`,p,wrong,`${s} → ${p} (irregular plural).`));
+      shuf([{s:'child',p:'children'},{s:'mouse',p:'mice'},{s:'tooth',p:'teeth'},{s:'foot',p:'feet'},{s:'woman',p:'women'},{s:'goose',p:'geese'},{s:'ox',p:'oxen'}]).slice(0,4).forEach(({s,p})=>{
+        vrae.push(maakV(`What is the plural of "${s}"?`,p,[s+'s',s+'es','same as singular'],`${s} → ${p} (irregular plural).`));
+      });
+      // SENTENCE context — which TYPE
+      [{s:'The dog barked at the cat.',n:'dog',t:'Common noun'},{s:'Amahle won the race.',n:'Amahle',t:'Proper noun'},
+       {s:'Her happiness was clear.',n:'happiness',t:'Abstract noun'},{s:'A flock of birds flew over.',n:'flock',t:'Collective noun'},
+      ].forEach(({s,n,t})=>{
+        vrae.push(maakV(`In "${s}" — what type of noun is "${n}"?`,t,['Common noun','Proper noun','Abstract noun','Collective noun','Uncountable noun'].filter(x=>x!==t).slice(0,3),`"${n}" is a ${t}.`));
       });
       break;
     }
 
     case 'pronouns':{
-      // Replace noun
+      // Replace noun with correct pronoun
       [{nm:'Thabo',v:'He'},{nm:'Amahle',v:'She'},{nm:'Thabo and Sipho',v:'They'},
        {nm:'Amahle and I',v:'We'},{nm:'the book',v:'it'},{nm:'the dogs',v:'they'},
       ].forEach(({nm,v})=>{
@@ -848,15 +882,27 @@ function genVrae(afdelId){
         const types=['Personal','Possessive','Demonstrative','Relative','Indefinite','Reflexive'];
         vrae.push(maakV(`What type of pronoun is "${vn}"?`,t,kies(types.filter(x=>x!==t),3),`"${vn}" is a ${t} pronoun.`));
       });
-      // Use in sentence
+      // FILL IN THE BLANK with context
       [{s:'The dog ___ bit me ran away.',r:'that',h:'"that" is a relative pronoun referring to a thing.'},
-       {s:'___ are you? (Thabo and Sipho)',r:'Who',h:'WHO? — asking about people.'},
        {s:'She washed ___ hands.',r:'her',h:'Her = possessive pronoun (belonging to her).'},
        {s:'He hurt ___ in the game.',r:'himself',h:'Himself = reflexive pronoun.'},
        {s:'___ book is this?',r:'Whose',h:'WHOSE? — asking about possession.'},
+       {s:'___ is coming to the party? (a person)',r:'Who',h:'WHO = relative pronoun for people.'},
+       {s:'I can do it ___.',r:'myself',h:'Myself = reflexive pronoun (I do it alone).'},
       ].forEach(({s,r,h})=>{
-        const all=['Who','that','her','him','himself','herself','Whose','their','its'];
+        const all=['Who','that','her','him','himself','herself','Whose','their','its','which','whom','myself'];
         vrae.push(maakV(`Choose the correct pronoun: "${s}"`,r,kies(all.filter(x=>x!==r),3),h));
+      });
+      // REWRITE: replace the underlined noun
+      [{s:'Amahle sings every day. ___ loves music.',r:'She',h:'Amahle = female → She'},
+       {s:'The cats are hungry. Feed ___.',r:'them',h:'The cats (plural) → them (object)'},
+       {s:'Thabo lost his bag. ___ is very upset.',r:'He',h:'Thabo = male → He'},
+      ].forEach(({s,r,h})=>{
+        vrae.push(maakV(`Complete the sentence with the correct pronoun: "${s}"`,r,['It','They','We','Her','Him'].filter(x=>x!==r).slice(0,3),h));
+      });
+      // Object vs subject pronoun
+      [{subj:'I',obj:'me'},{subj:'he',obj:'him'},{subj:'she',obj:'her'},{subj:'they',obj:'them'},{subj:'we',obj:'us'}].forEach(({subj,obj})=>{
+        vrae.push(maakV(`What is the OBJECT form of "${subj}"?`,obj,['I','he','she','they','we'].filter(x=>x!==obj).slice(0,3),`Subject: ${subj} → Object: ${obj}`));
       });
       break;
     }
@@ -865,13 +911,13 @@ function genVrae(afdelId){
       // Identify adjective in sentence
       [{s:'The tall boy won.',a:'tall',nw:'boy'},{s:'She has a red dress.',a:'red',nw:'dress'},
        {s:'A clever student answers.',a:'clever',nw:'student'},{s:'The cold water is refreshing.',a:'cold',nw:'water'},
-       {s:'He drives a fast car.',a:'fast',nw:'car'},
+       {s:'He drives a fast car.',a:'fast',nw:'car'},{s:'She is a kind teacher.',a:'kind',nw:'teacher'},
       ].forEach(({s,a,nw})=>{
         const words=s.replace(/[.,]/g,'').split(' ').filter(w=>w!==a);
-        vrae.push(maakV(`Identify the adjective in: "${s}"`,a,kies(words,3),`"${a}" describes the noun "${nw}".`));
+        vrae.push(maakV(`Which word is the ADJECTIVE in: "${s}"?`,a,kies(words,3),`"${a}" describes the noun "${nw}".`));
       });
       // Degrees
-      shuf(ADJ_TRAPPE).slice(0,7).forEach(({p,c,s})=>{
+      shuf(ADJ_TRAPPE).slice(0,5).forEach(({p,c,s})=>{
         const other=ADJ_TRAPPE.filter(x=>x.p!==p);
         vrae.push(maakV(`Comparative degree of "${p}"?`,c,kies(other,2).map(x=>x.c).concat([s]),`${p} → ${c} → the ${s}`));
         vrae.push(maakV(`Superlative degree of "${p}"?`,'the '+s,kies(other,2).map(x=>'the '+x.s).concat([c]),`${p} → ${c} → the ${s}`));
@@ -879,12 +925,24 @@ function genVrae(afdelId){
       // Attributive vs predicative
       [{s:'The tall boy runs.',a:'tall',t:true},{s:'The boy IS tall.',a:'tall',t:false},
        {s:'She wears a red dress.',a:'red',t:true},{s:'The dress LOOKS red.',a:'red',t:false},
-       {s:'A clever student answers.',a:'clever',t:true},{s:'The student IS clever.',a:'clever',t:false},
       ].forEach(({s,a,t})=>{
         vrae.push(maakV(`How is "${a}" used in "${s}"?`,
           t?'Attributive (before noun)':'Predicative (after linking verb)',
           t?['Predicative (after linking verb)','Adverb','Article']:['Attributive (before noun)','Adverb','Article'],
           t?`"${a}" stands BEFORE the noun — attributive.`:`"${a}" stands AFTER the linking verb — predicative.`));
+      });
+      // FILL IN THE BLANK — choose correct degree
+      [{s:'She is ___ than her sister. (tall)',a:'taller',opts:['tallest','most tall','tall'],h:'Comparative: taller (comparing 2)'},
+       {s:'He is the ___ student in the class. (smart)',a:'smartest',opts:['smarter','most smart','smart'],h:'Superlative: smartest (comparing all)'},
+       {s:'This is the ___ cake I have ever eaten! (delicious)',a:'most delicious',opts:['more delicious','deliciousest','delicious'],h:'Superlative of long adjective: most delicious'},
+      ].forEach(({s,a,opts,h})=>{
+        vrae.push(maakV(`Fill in the correct form: "${s}"`,a,opts,h));
+      });
+      // CORRECT THE ERROR
+      [{wrong:'She is more tall than me.',correct:'She is taller than me.',h:'Short adjectives use -er: taller (not more tall)'},
+       {wrong:'He is the most fast runner.',correct:'He is the fastest runner.',h:'Short adjectives use -est: fastest (not most fast)'},
+      ].forEach(({wrong,correct,h})=>{
+        vrae.push(maakV(`Which sentence is CORRECT?`,correct,[wrong,wrong.replace('more','most'),wrong.replace('most','more')],h));
       });
       break;
     }
@@ -896,24 +954,32 @@ function genVrae(afdelId){
        {s:'The birds fly south.',v:'fly'},{s:'He swims every day.',v:'swims'},
       ].forEach(({s,v})=>{
         const words=s.replace(/[.,]/g,'').split(' ').filter(w=>w!==v);
-        vrae.push(maakV(`Identify the verb in: "${s}"`,v,kies(words,3),`Ask: "What does the subject DO?" — "${v}" is the verb.`));
+        vrae.push(maakV(`Which word is the VERB in: "${s}"?`,v,kies(words,3),`Ask: "What does the subject DO?" — "${v}" is the verb.`));
       });
       // Irregular past tense
-      shuf(IRVERBS).slice(0,8).forEach(({p,pt,pp})=>{
+      shuf(IRVERBS).slice(0,6).forEach(({p,pt,pp})=>{
         const other=IRVERBS.filter(x=>x.p!==p);
         vrae.push(maakV(`Past tense of "${p}"?`,pt,kies(other,2).map(x=>x.pt).concat([p+'ed']),`${p} → ${pt} → ${pp} (irregular verb)`));
       });
       // Past participle
-      shuf(IRVERBS).slice(0,6).forEach(({p,pt,pp})=>{
+      shuf(IRVERBS).slice(0,4).forEach(({p,pt,pp})=>{
         const other=IRVERBS.filter(x=>x.p!==p);
-        vrae.push(maakV(`Past participle of "${p}"?`,pp,kies(other,2).map(x=>x.pp).concat([pt]),`${p} → ${pt} → ${pp}`));
+        vrae.push(maakV(`Past participle of "${p}"? (used with has/have/had)`,pp,kies(other,2).map(x=>x.pp).concat([pt]),`${p} → ${pt} → ${pp}`));
       });
       // Type of verb
-      shuf(VERBS_AUX).slice(0,5).forEach(v=>{
+      shuf(VERBS_AUX).slice(0,4).forEach(v=>{
         vrae.push(maakV(`What type of verb is "${v}"?`,'Auxiliary (helping) verb',['Main verb','Linking verb','Adverb'],`"${v}" HELPS the main verb — auxiliary verb.`));
       });
-      shuf(VERBS_LINK).slice(0,4).forEach(v=>{
+      shuf(VERBS_LINK).slice(0,3).forEach(v=>{
         vrae.push(maakV(`What type of verb is "${v}"?`,'Linking verb',['Main verb','Auxiliary verb','Adverb'],`"${v}" LINKS the subject with a description — linking verb.`));
+      });
+      // FILL IN THE BLANK — choose correct verb form
+      [{s:'She ___ to school every day.',a:'walks',opts:['walk','walked','walking'],h:'Simple present, 3rd person singular: walks'},
+       {s:'They ___ the match yesterday.',a:'watched',opts:['watch','watches','watching'],h:'Simple past: watched'},
+       {s:'He ___ singing when I arrived.',a:'was',opts:['is','were','has'],h:'Past continuous: was + -ing'},
+       {s:'She has ___ to Cape Town before.',a:'been',opts:['went','go','going'],h:'Present perfect: has + past participle (been)'},
+      ].forEach(({s,a,opts,h})=>{
+        vrae.push(maakV(`Choose the correct verb form: "${s}"`,a,opts,h));
       });
       // Tense identification
       [{s:'She sings every day.',t:'Present'},{s:'He sang a song.',t:'Past'},
@@ -927,14 +993,22 @@ function genVrae(afdelId){
     case 'adverbs':{
       // Identify adverb type
       const types=['Manner (HOW?)','Time (WHEN?)','Place (WHERE?)','Degree (HOW MUCH?)','Frequency (HOW OFTEN?)'];
-      shuf(ADV_DATA).slice(0,8).forEach(({bw,t,s})=>{
+      shuf(ADV_DATA).slice(0,6).forEach(({bw,t,s})=>{
         const other=types.filter(x=>x!==t);
         vrae.push(maakV(`In "${s}" — what type of adverb is "${bw}"?`,t,kies(other,3),`"${bw}" tells us ${t}`));
       });
       // Identify adverb in sentence
-      shuf(ADV_DATA).slice(0,7).forEach(({bw,s})=>{
+      shuf(ADV_DATA).slice(0,5).forEach(({bw,s})=>{
         const words=s.replace(/[.,]/g,'').split(' ').filter(w=>w!==bw);
-        vrae.push(maakV(`Identify the adverb in: "${s}"`,bw,kies(words,3),`"${bw}" tells us HOW/WHEN/WHERE — it is the adverb.`));
+        vrae.push(maakV(`Which word is the ADVERB in: "${s}"?`,bw,kies(words,3),`"${bw}" tells us HOW/WHEN/WHERE/HOW MUCH — it is the adverb.`));
+      });
+      // FILL IN THE BLANK
+      [{s:'She sings ___. (HOW — in a quiet way)',a:'softly',opts:['loud','quiet','soft']},
+       {s:'He came home ___. (WHEN)',a:'yesterday',opts:['here','slowly','because']},
+       {s:'The dog sat ___. (WHERE)',a:'outside',opts:['quickly','never','happily']},
+       {s:'She is ___ happy. (HOW MUCH)',a:'very',opts:['always','there','fast']},
+      ].forEach(({s,a,opts})=>{
+        vrae.push(maakV(`Fill in the correct adverb: "${s}"`,a,opts,`"${a}" is the correct adverb here.`));
       });
       // Adverb degrees
       [{p:'fast',c:'faster',s:'fastest'},{p:'hard',c:'harder',s:'hardest'},
@@ -945,6 +1019,10 @@ function genVrae(afdelId){
       // -ly suffix
       [{v:'quick',a:'quickly'},{v:'careful',a:'carefully'},{v:'loud',a:'loudly'},{v:'slow',a:'slowly'}].forEach(({v,a})=>{
         vrae.push(maakV(`Form the adverb from "${v}".`,a,[v,v+'er','most '+v],`${v} + -ly = ${a}`));
+      });
+      // Which word does the adverb modify?
+      [{s:'She runs quickly.',bw:'quickly',mod:'runs (verb)'},{s:'He is very clever.',bw:'very',mod:'clever (adjective)'}].forEach(({s,bw,mod})=>{
+        vrae.push(maakV(`In "${s}" — what does "${bw}" modify?`,mod,['She (noun)','quickly (adverb)','the (article)'],`"${bw}" modifies ${mod}.`));
       });
       break;
     }
@@ -1258,6 +1336,67 @@ function genVrae(afdelId){
       break;
     }
 
+    case 'interjections':{
+      const interjData=[
+        {w:'Wow',e:'surprise',s:'"___ ! I can\'t believe you won!"',h:'WOW = surprise interjection.'},
+        {w:'Ouch',e:'pain',s:'"___ ! That really hurt!"',h:'OUCH = pain interjection.'},
+        {w:'Hooray',e:'joy',s:'"___ ! We won the championship!"',h:'HOORAY = joy/celebration interjection.'},
+        {w:'Yuck',e:'disgust',s:'"___ ! This smells terrible!"',h:'YUCK = disgust interjection.'},
+        {w:'Phew',e:'relief',s:'"___ ! I am so glad that is over!"',h:'PHEW = relief interjection.'},
+        {w:'Oops',e:'mistake',s:'"___ ! I dropped the glass!"',h:'OOPS = mistake/accident interjection.'},
+        {w:'Shh',e:'silence',s:'"___ ! The baby is sleeping!"',h:'SHH = silence/quiet interjection.'},
+      ];
+      // Fill in the blank
+      shuf(interjData).slice(0,5).forEach(({w,e,s,h})=>{
+        const ander=interjData.filter(x=>x.w!==w).map(x=>x.w);
+        vrae.push(maakV(`Fill in the correct interjection: ${s}`,w,kies(ander,3),h));
+      });
+      // Identify emotion
+      shuf(interjData).slice(0,5).forEach(({w,e,h})=>{
+        const emts=['surprise','pain','joy','disgust','relief','mistake','silence'];
+        vrae.push(maakV(`"${w}!" expresses ___?`,e,kies(emts.filter(x=>x!==e),3),h));
+      });
+      // Identify interjection in sentence
+      [{s:'"Wow! She scored a goal!"',i:'Wow'},{s:'"Ouch! That bee stung me!"',i:'Ouch'},
+       {s:'"Hooray! It is the holidays!"',i:'Hooray'},{s:'"Shh! Please be quiet!"',i:'Shh'},
+      ].forEach(({s,i})=>{
+        vrae.push(maakV(`Identify the interjection in: ${s}`,i,['She','That','Please','holidays'],`"${i}" expresses emotion — it is the interjection.`));
+      });
+      // Rule questions
+      vrae.push(maakV('An interjection is followed by ___?','An exclamation mark (!)',['A full stop (.)','A comma (,)','A question mark (?)'],'Interjections express strong emotion and end with an exclamation mark!'));
+      vrae.push(maakV('Is an interjection grammatically connected to the rest of the sentence?','No — it stands alone',['Yes — it is the subject','Yes — it is the verb','Yes — it modifies the noun'],'Interjections are NOT grammatically connected to the sentence.'));
+      vrae.push(maakV('Which word is an interjection?','Hooray!',['Run','Quickly','The'],'Hooray! expresses joy — it is an interjection.'));
+      vrae.push(maakV('Which of these is a pain interjection?','Ouch!',['Wow!','Hooray!','Shh!'],'Ouch! is used when you feel pain.'));
+      break;
+    }
+
+    case 'numerical_adj':{
+      // Cardinal vs ordinal
+      [{n:'five',t:'Cardinal'},{n:'third',t:'Ordinal'},{n:'twice',t:'Multiplicative'},
+       {n:'second',t:'Ordinal'},{n:'twelve',t:'Cardinal'},{n:'double',t:'Multiplicative'},
+       {n:'first',t:'Ordinal'},{n:'hundred',t:'Cardinal'},
+      ].forEach(({n,t})=>{
+        vrae.push(maakV(`"${n}" is a ___ numerical adjective.`,t,['Cardinal','Ordinal','Multiplicative'].filter(x=>x!==t),
+          `${n} = ${t === 'Cardinal'?'exact number (how many)':t==='Ordinal'?'position/order (which place)':'how many times'}`));
+      });
+      // Fill in: ordinal
+      [{p:1,o:'first'},{p:2,o:'second'},{p:3,o:'third'},{p:4,o:'fourth'},{p:5,o:'fifth'},{p:10,o:'tenth'}].forEach(({p,o})=>{
+        vrae.push(maakV(`What is the ordinal form of "${p}"?`,o,['last','middle','next','another'].concat([o+'th',''+p+'st']).slice(0,3),`${p} → ${o}`));
+      });
+      // Definite vs indefinite
+      [{s:'There are FIVE apples on the table.',t:'Definite'},{s:'SOME children were late.',t:'Indefinite'},
+       {s:'He checked the answer TWICE.',t:'Multiplicative'},{s:'MANY people came to the party.',t:'Indefinite'},
+       {s:'She finished FIRST in the race.',t:'Ordinal'},{s:'He has THREE brothers.',t:'Definite'},
+      ].forEach(({s,t})=>{
+        vrae.push(maakV(`The highlighted word in "${s}" is a ___ numerical adjective.`,t,['Definite','Indefinite','Ordinal','Multiplicative','Distributive'].filter(x=>x!==t).slice(0,3),`${t} numerical adjective.`));
+      });
+      // Distributive
+      ['each','every','either','neither'].forEach(w=>{
+        vrae.push(maakV(`"${w}" is a ___ numerical adjective.`,'Distributive',['Cardinal','Ordinal','Multiplicative'],`"${w}" refers to individuals in a group — distributive.`));
+      });
+      break;
+    }
+
     default:{
       vrae.push(maakV('What is a noun?','A naming word',['An action word','A describing word','A joining word'],'A noun NAMES a person, place, thing or idea.'));
       break;
@@ -1326,9 +1465,16 @@ function toonOeSkort(){
 let toetsGraad=4,toetsVrae=[],toetsI=0,toetsSk=0,toetsAns=false;
 function setGraad(g,el){toetsGraad=g;document.querySelectorAll('.gr-btn').forEach(b=>b.classList.remove('on'));el.classList.add('on');herlaaiToets();}
 function herlaaiToets(){
-  const alle=['nouns','pronouns','adjectives','verbs','adverbs','active_passive','direct_indirect','negatives'];
+  // All available sections grouped by difficulty level
+  const gr4=['nouns','pronouns','adjectives','verbs','adverbs','articles','conjunctions','interjections'];
+  const gr5=['nouns','pronouns','adjectives','verbs','adverbs','tenses','prepositions','conjunctions','sentence_types','interjections','numerical_adj'];
+  const gr6=['nouns','pronouns','adjectives','verbs','adverbs','tenses','prepositions','conjunctions','sentence_types','active_passive','spelling_rules','vocabulary','numerical_adj'];
+  const gr7=['nouns','pronouns','adjectives','verbs','adverbs','tenses','prepositions','conjunctions','sentence_types','active_passive','direct_indirect','negatives','compound_complex','spelling_rules','punctuation_en','word_formation','vocabulary','numerical_adj'];
+  const pools={4:gr4,5:gr5,6:gr6,7:gr7};
+  const pool=pools[toetsGraad]||gr4;
   toetsVrae=[];
-  shuf(alle).slice(0,5).forEach(id=>{toetsVrae.push(...genVrae(id).slice(0,4));});
+  // Pick 6 different sections, 3-4 questions each = ~20 questions
+  shuf(pool).slice(0,6).forEach(id=>{toetsVrae.push(...genVrae(id).slice(0,4));});
   toetsVrae=shuf(toetsVrae).slice(0,20);
   toetsI=0;toetsSk=0;toetsAns=false;toonToets();
 }
@@ -1337,9 +1483,10 @@ function toonToets(){
   if(toetsI>=toetsVrae.length){toonToetsSkort();return;}
   const q=toetsVrae[toetsI];toetsAns=false;
   const pct=Math.round(toetsI/toetsVrae.length*100);
+  const topicLabel=q.topic?` · ${q.topic}`:'';
   el.innerHTML=`
   <div class="qcard">
-    <div class="qmeta"><span class="qbadge">📝 Grade ${toetsGraad}</span><span class="qnum">${toetsI+1} / ${toetsVrae.length}</span></div>
+    <div class="qmeta"><span class="qbadge">📝 Grade ${toetsGraad}${topicLabel}</span><span class="qnum">${toetsI+1} / ${toetsVrae.length}</span></div>
     <div class="qbar"><div class="qbar-f" style="width:${pct}%"></div></div>
     <div class="qvraag">${q.q}</div>
     <div class="ogrid">${q.options.map((o,i)=>`<button class="ob" id="tb${i}" onclick="kiesT(${i})">${o}</button>`).join('')}</div>
